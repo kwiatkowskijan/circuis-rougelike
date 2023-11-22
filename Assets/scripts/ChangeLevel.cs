@@ -14,7 +14,7 @@ public class ChangeLevel : MonoBehaviour
     void Update()
     {
         Vector3 cameraPosition = Camera.main.transform.position;
-        Debug.Log("Aktualna pozycja kamery: " + cameraPosition);
+        //Debug.Log("Aktualna pozycja kamery: " + cameraPosition);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

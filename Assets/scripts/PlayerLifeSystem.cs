@@ -14,6 +14,12 @@ public class PlayerLifeSystem : MonoBehaviour
         heartDisplay.UpdateHearts(currentHealth);
     }
 
+    public void Update()
+    {
+        Debug.Log("Max zdrowie: " + maxHealth);
+        Debug.Log("Aktualne zdrowie: " + currentHealth);
+    }
+
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
@@ -26,5 +32,11 @@ public class PlayerLifeSystem : MonoBehaviour
         {
             heartDisplay.UpdateHearts(currentHealth);
         }
+    }
+
+    public void IncreaseMaxHealth(int MaxHealthAmmount)
+    {
+        maxHealth = maxHealth + MaxHealthAmmount;
+        currentHealth = maxHealth;
     }
 }

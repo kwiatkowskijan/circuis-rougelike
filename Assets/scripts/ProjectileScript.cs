@@ -6,7 +6,12 @@ public class ProjectileScript : MonoBehaviour
 {
     public float speed = 7.5f;
     private Vector3 direction;
+    public float lifeTime = 3.0f;
 
+    public void Start()
+    {
+        StartCoroutine(DeathDelay());
+    }
     public void SetDirection(Vector3 dir)
     {
         direction = dir;
@@ -33,5 +38,11 @@ public class ProjectileScript : MonoBehaviour
             // Zniszczenie pocisku po trafieniu w gracza
             Destroy(gameObject);
         }
+    }
+
+    IEnumerator DeathDelay()
+    {
+        yield return new WaitForSeconds(lifeTime);
+        Destroy(gameObject);
     }
 }
