@@ -5,18 +5,27 @@ using UnityEngine;
 public class DamageDealer : MonoBehaviour
 {
     public int damageAmount = 1;
+    public string wallTag = "Wall";
+    public string enemyTag = "Enemy";
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        EnemyAI enemy = other.GetComponent<EnemyAI>();
+        MeleEnemyAI meleEnemy = other.GetComponent<MeleEnemyAI>();
+        RangeEnemyAI rangeEnemy = other.GetComponent<RangeEnemyAI>();   
 
-        if (enemy != null)
+        if (meleEnemy != null)
         {
-            enemy.TakeDamage(damageAmount);
+            meleEnemy.TakeDamage(damageAmount);
             Destroy(gameObject);
         }
 
-        if (gameObject.CompareTag("Wall"))
+        if (rangeEnemy != null)
+        {
+            rangeEnemy.TakeDamage(damageAmount);
+            Destroy(gameObject);
+        }
+
+        if (other.CompareTag(wallTag))
         {
             Destroy(gameObject);
         }

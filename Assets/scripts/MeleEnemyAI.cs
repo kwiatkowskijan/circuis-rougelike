@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAI : MonoBehaviour
+public class MeleEnemyAI : MonoBehaviour
 {
     public Transform player;
     public float moveSpeed = 3.0f;
