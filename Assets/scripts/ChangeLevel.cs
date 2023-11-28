@@ -4,7 +4,7 @@ using UnityEngine;
 public class ChangeLevel : MonoBehaviour
 {
 
-    public GameObject enemyPrefab;
+    //public GameObject enemyPrefab;
 
     void Start()
     {
