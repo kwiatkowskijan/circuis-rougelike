@@ -19,7 +19,6 @@ public class HeartDisplay : MonoBehaviour
         }
         else
         {
-            // Aktualizuj serduszka na podstawie maksymalnego zdrowia
             UpdateHearts(playerLifeSystem.maxHealth);
         }
     }

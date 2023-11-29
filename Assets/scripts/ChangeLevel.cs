@@ -4,7 +4,7 @@ using UnityEngine;
 public class ChangeLevel : MonoBehaviour
 {
 
-    public GameObject enemyPrefab;
+    //public GameObject enemyPrefab;
 
     void Start()
     {
@@ -14,7 +14,7 @@ public class ChangeLevel : MonoBehaviour
     void Update()
     {
         Vector3 cameraPosition = Camera.main.transform.position;
-        Debug.Log("Aktualna pozycja kamery: " + cameraPosition);
+        //Debug.Log("Aktualna pozycja kamery: " + cameraPosition);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -23,11 +23,11 @@ public class ChangeLevel : MonoBehaviour
         {
             Camera.main.transform.position += new Vector3(0f, 25f, 0f);
 
-            StartCoroutine(SpawnEnemies(1.5f));
+            //StartCoroutine(SpawnEnemies(1.5f));
         }
     }
 
-    IEnumerator SpawnEnemies(float delayTime)
+    /*IEnumerator SpawnEnemies(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
 
@@ -43,5 +43,5 @@ public class ChangeLevel : MonoBehaviour
 
             Instantiate(enemyPrefab, new Vector2(randomX, randomY), Quaternion.identity);
         }
-    }
+    }*/
 }

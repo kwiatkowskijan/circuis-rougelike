@@ -35,19 +35,10 @@ public class Movement : MonoBehaviour
     {
         GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation) as GameObject;
         bullet.AddComponent<Rigidbody2D>().gravityScale = 0;
-
-        Vector2 shootDirection = new Vector2(x, y);
-        float angle = Mathf.Atan2(shootDirection.y, shootDirection.x) * Mathf.Rad2Deg;
-
+        Vector2 shootDirection = new Vector2(x, y).normalized;
+        float angle = Mathf.Atan2(shootDirection.normalized.y, shootDirection.normalized.x) * Mathf.Rad2Deg;
         bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
-
-        if (Mathf.Abs(x) > Mathf.Abs(y))  // Poruszanie siê w poziomie jest dominuj¹ce.
-        {
-            bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(x > 0 ? bulletSpeed : -bulletSpeed, 0);
-        }
-        else  
-        {
-            bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(0, y > 0 ? bulletSpeed : -bulletSpeed);
-        }
+        bullet.GetComponent<Rigidbody2D>().velocity = shootDirection * bulletSpeed;
     }
+
 }
