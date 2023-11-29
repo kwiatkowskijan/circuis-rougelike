@@ -6,8 +6,8 @@ using UnityEngine.Tilemaps;
 public class key : MonoBehaviour
 {
     public Tilemap tilemap;
-    public TileBase doorUp;
-    public TileBase doorDown;
+    public TileBase doorUp1;
+    public TileBase doorUp2;
     public Vector3Int wspolrzedneKafelkaUp1;
     public Vector3Int wspolrzedneKafelkaUp2;
 
@@ -17,8 +17,8 @@ public class key : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            tilemap.SetTile(wspolrzedneKafelkaUp1, doorUp);
-            tilemap.SetTile(wspolrzedneKafelkaUp2, doorUp);
+            tilemap.SetTile(wspolrzedneKafelkaUp1, doorUp1);
+            tilemap.SetTile(wspolrzedneKafelkaUp2, doorUp2);
 
             GameObject levelChanger = Instantiate(changelevel, new Vector2(0, 3.5f), transform.rotation);
 

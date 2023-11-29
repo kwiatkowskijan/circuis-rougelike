@@ -70,6 +70,7 @@ EdgeCollider2D:
   m_Points:
   - {x: -0.5, y: 0}
   - {x: 0.5, y: 0}
+  - {x: 0.5, y: 0}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -86,4 +87,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a980e8debe3f865448d4c9b14ac3f213, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 5495794134888299073}
+  transitionDuration: 1
