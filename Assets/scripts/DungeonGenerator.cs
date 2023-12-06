@@ -7,9 +7,9 @@ public class DungeonGenerator : MonoBehaviour
     public int numberOfRooms = 25;
     public float roomDistanceX = 25f;
     public float roomDistanceY = 15f;
+    float tolerance = 0.1f;
 
     private GameObject lastRoom;
-
     public GameObject startingRoom;
 
     void Start()
@@ -27,13 +27,13 @@ public class DungeonGenerator : MonoBehaviour
 
         Vector3 spawnPosition = startingRoom.transform.position;
 
-        lastRoom = startingRoom; // Ustawienie pocz¹tkowego pomieszczenia jako ostatniego
+        lastRoom = startingRoom;
 
-        List<Vector2> directions = new List<Vector2> { Vector2.right, Vector2.up }; // Lista kierunków: prawo (x), góra (y)
+        List<Vector2> directions = new List<Vector2> { Vector2.right, Vector2.up, };
 
         for (int i = 0; i < numberOfRooms; i++)
         {
-            int numberOfRoomsToSpawn = Random.Range(2, 4); // Zawsze 2 lub 3 pomieszczenia obok siebie
+            int numberOfRoomsToSpawn = Random.Range(1, 3); // Zawsze 2 lub 3 pomieszczenia obok siebie
 
             for (int j = 0; j < numberOfRoomsToSpawn; j++)
             {
@@ -41,7 +41,7 @@ public class DungeonGenerator : MonoBehaviour
                 Vector3 newPosition = spawnPosition + new Vector3(direction.x * roomDistanceX, direction.y * roomDistanceY, 0);
 
                 // Sprawdzenie, czy nowa pozycja nie jest taka sama jak poprzednia
-                if (lastRoom != null && newPosition != lastRoom.transform.position)
+                if (lastRoom != null && Vector3.Distance(newPosition, lastRoom.transform.position) > tolerance)
                 {
                     GameObject newRoom = Instantiate(roomPrefab, newPosition, Quaternion.identity);
                     lastRoom = newRoom;
