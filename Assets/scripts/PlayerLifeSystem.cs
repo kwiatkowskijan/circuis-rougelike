@@ -16,8 +16,8 @@ public class PlayerLifeSystem : MonoBehaviour
 
     public void Update()
     {
-        Debug.Log("Max zdrowie: " + maxHealth);
-        Debug.Log("Aktualne zdrowie: " + currentHealth);
+        //Debug.Log("Max zdrowie: " + maxHealth);
+        //Debug.Log("Aktualne zdrowie: " + currentHealth);
     }
 
     public void TakeDamage(int damage)

@@ -1,16 +1,16 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class DungeonGenerator : MonoBehaviour
 {
     public GameObject roomPrefab;
-    public int numberOfRooms = 25;
+    public GameObject startingRoom;
+    public int numberOfRooms = 15;
     public float roomDistanceX = 25f;
     public float roomDistanceY = 15f;
-    float tolerance = 0.1f;
+    public int maxRoomsPerIteration = 4;
 
-    private GameObject lastRoom;
-    public GameObject startingRoom;
+    private List<GameObject> generatedRooms = new List<GameObject>();
 
     void Start()
     {
@@ -25,35 +25,37 @@ public class DungeonGenerator : MonoBehaviour
             return;
         }
 
-        Vector3 spawnPosition = startingRoom.transform.position;
+        generatedRooms.Add(startingRoom); // Dodanie pocz¹tkowego pomieszczenia
 
-        lastRoom = startingRoom;
-
-        List<Vector2> directions = new List<Vector2> { Vector2.right, Vector2.up, };
-
-        for (int i = 0; i < numberOfRooms; i++)
+        int generatedCount = 0;
+        while (generatedCount < numberOfRooms - 1) // -1 dla pominiêcia pomieszczenia pocz¹tkowego
         {
-            int numberOfRoomsToSpawn = Random.Range(1, 3); // Zawsze 2 lub 3 pomieszczenia obok siebie
+            Vector2[] directions = { Vector2.up, Vector2.down, Vector2.right, Vector2.left };
+            Vector2 randomDirection = directions[Random.Range(0, directions.Length)];
 
-            for (int j = 0; j < numberOfRoomsToSpawn; j++)
+            Vector3 newPosition = generatedRooms[Random.Range(0, generatedRooms.Count)].transform.position +
+                new Vector3(randomDirection.x * roomDistanceX, randomDirection.y * roomDistanceY, 0f);
+
+            bool positionOccupied = IsPositionOccupied(newPosition);
+
+            if (!positionOccupied)
             {
-                Vector2 direction = directions[Random.Range(0, directions.Count)];
-                Vector3 newPosition = spawnPosition + new Vector3(direction.x * roomDistanceX, direction.y * roomDistanceY, 0);
+                GameObject newRoom = Instantiate(roomPrefab, newPosition, Quaternion.identity);
+                generatedRooms.Add(newRoom); // Dodanie nowego pomieszczenia do listy
+                generatedCount++;
+            }
+        }
 
-                // Sprawdzenie, czy nowa pozycja nie jest taka sama jak poprzednia
-                if (lastRoom != null && Vector3.Distance(newPosition, lastRoom.transform.position) > tolerance)
+        bool IsPositionOccupied(Vector3 position)
+        {
+            foreach (GameObject room in generatedRooms)
+            {
+                if (Vector3.Distance(room.transform.position, position) < 0.1f) // Sprawdzenie odleg³oœci
                 {
-                    GameObject newRoom = Instantiate(roomPrefab, newPosition, Quaternion.identity);
-                    lastRoom = newRoom;
-                }
-                else
-                {
-                    // Jeœli nowa pozycja jest taka sama jak poprzednia, przesuñ siê jeszcze raz w tym samym kierunku
-                    spawnPosition += new Vector3(direction.x * roomDistanceX, direction.y * roomDistanceY, 0);
-                    GameObject newRoom = Instantiate(roomPrefab, spawnPosition, Quaternion.identity);
-                    lastRoom = newRoom;
+                    return true;
                 }
             }
+            return false;
         }
     }
 }
