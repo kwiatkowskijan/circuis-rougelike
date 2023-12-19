@@ -26,7 +26,7 @@ public class PlayerLifeSystem : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("Game");
         }
         else
         {
