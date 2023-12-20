@@ -28,6 +28,7 @@ public class DungeonGenerator : MonoBehaviour
         generatedRooms.Add(startingRoom); // Dodanie pocz¹tkowego pomieszczenia
 
         int generatedCount = 0;
+
         while (generatedCount < numberOfRooms - 1) // -1 dla pominiêcia pomieszczenia pocz¹tkowego
         {
             Vector2[] directions = { Vector2.up, Vector2.down, Vector2.right, Vector2.left };
