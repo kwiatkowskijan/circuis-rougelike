@@ -2579,7 +2579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9a716f423ba02942bb38a512093e4c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy1: {fileID: 0}
+  enemy1: {fileID: 2397637815781803479, guid: 905cdd51f3d07c74b97ce920db37c87f, type: 3}
   enemy2: {fileID: 0}
   tilemap: {fileID: 0}
   spawnDelay: 1

@@ -14,6 +14,13 @@ public class EnemiesSpawner : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            MeleEnemyAI[] enemies = GetComponentsInChildren<MeleEnemyAI>();
+
+            foreach (MeleEnemyAI enemyAI in enemies)
+            {
+                enemyAI.player = collision.transform;
+            }
+
             Invoke("SpawnEnemy", spawnDelay);
         }
     }
@@ -30,7 +37,13 @@ public class EnemiesSpawner : MonoBehaviour
 
             Vector3 spawnPosition = tilemap.CellToWorld(randomCell);
 
-            Instantiate(enemy1, spawnPosition, Quaternion.identity);
+            GameObject newEnemy = Instantiate(enemy1, spawnPosition, Quaternion.identity);
+            MeleEnemyAI enemyAI = newEnemy.GetComponent<MeleEnemyAI>();
+
+            if (enemyAI != null)
+            {
+                enemyAI.player = GameObject.FindGameObjectWithTag("Player").transform;
+            }
         }
     }
 }
