@@ -88,21 +88,20 @@ public class EnemiesSpawner : MonoBehaviour
 
                         if (direction == Vector2.up)
                         {
-                            Debug.Log("Kolizja w kierunku górnym! " + connectedRoom.name + connectedRoom.tag + hit.point);
                             wallsTilemap.SetTile(wspolrzedneKafelkaUp1, doorUp2);
                             wallsTilemap.SetTile(wspolrzedneKafelkaUp2, doorUp1);
                         }
                         else if (direction == Vector2.down)
                         {
-                            Debug.Log("Kolizja w kierunku dolnym! " + connectedRoom.name + connectedRoom.tag + hit.point);
+                   
                         }
                         else if (direction == Vector2.right)
                         {
-                            Debug.Log("Kolizja w kierunku prawym! " + connectedRoom.name + connectedRoom.tag + hit.point);
+                            
                         }
                         else if (direction == Vector2.left)
                         {
-                            Debug.Log("Kolizja w kierunku lewym! " + connectedRoom.name + connectedRoom.tag + hit.point);
+                            
                         }
                     }
                 }
