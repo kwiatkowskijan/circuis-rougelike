@@ -10,10 +10,26 @@ public class EnemiesSpawner : MonoBehaviour
     public Tilemap tilemap;
     public float spawnDelay = 2.5f;
 
+    public LayerMask roomLayer;
+    private float MaxConDistanceX = 25f;
+    private float MaxConDistanceY = 15f;
+
+    public Tilemap wallsTilemap;
+    public TileBase doorUp1;
+    public TileBase doorUp2;
+    public Vector3Int wspolrzedneKafelkaUp1;
+    public Vector3Int wspolrzedneKafelkaUp2;
+
+    private void Start()
+    {
+        GameObject room = GetComponent<GameObject>();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
-        {
+        { 
+
             MeleEnemyAI[] enemies = GetComponentsInChildren<MeleEnemyAI>();
 
             foreach (MeleEnemyAI enemyAI in enemies)
@@ -21,7 +37,10 @@ public class EnemiesSpawner : MonoBehaviour
                 enemyAI.player = collision.transform;
             }
 
-            Invoke("SpawnEnemy", spawnDelay);
+            //Invoke("SpawnEnemy", spawnDelay);
+            CheckRoomsPositions();
+
+
         }
     }
 
@@ -46,4 +65,49 @@ public class EnemiesSpawner : MonoBehaviour
             }
         }
     }
+
+    void CheckRoomsPositions()
+    {
+        List<GameObject> connectedRooms = new List<GameObject>();
+        Vector2[] CheckDirections = { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
+
+        foreach (Vector2 direction in CheckDirections)
+        {
+            float maxDistance = direction == Vector2.up || direction == Vector2.down ? MaxConDistanceY : MaxConDistanceX;
+
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, maxDistance, roomLayer);
+
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit.collider != null && hit.collider.gameObject != gameObject && hit.collider.CompareTag("Floor")) 
+                {
+                    GameObject connectedRoom = hit.collider.gameObject;
+                    if (!connectedRooms.Contains(connectedRoom))
+                    {
+                        connectedRooms.Add(connectedRoom);
+
+                        if (direction == Vector2.up)
+                        {
+                            Debug.Log("Kolizja w kierunku górnym! " + connectedRoom.name + connectedRoom.tag + hit.point);
+                            wallsTilemap.SetTile(wspolrzedneKafelkaUp1, doorUp2);
+                            wallsTilemap.SetTile(wspolrzedneKafelkaUp2, doorUp1);
+                        }
+                        else if (direction == Vector2.down)
+                        {
+                            Debug.Log("Kolizja w kierunku dolnym! " + connectedRoom.name + connectedRoom.tag + hit.point);
+                        }
+                        else if (direction == Vector2.right)
+                        {
+                            Debug.Log("Kolizja w kierunku prawym! " + connectedRoom.name + connectedRoom.tag + hit.point);
+                        }
+                        else if (direction == Vector2.left)
+                        {
+                            Debug.Log("Kolizja w kierunku lewym! " + connectedRoom.name + connectedRoom.tag + hit.point);
+                        }
+                    }
+                }
+            }
+        }
+    }
+   
 }

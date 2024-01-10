@@ -40,8 +40,6 @@ public class ChangeLevelUp : MonoBehaviour
                 isTransitioning = false;
             }
         }
-
-        Debug.Log(isTransitioning);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -50,7 +48,6 @@ public class ChangeLevelUp : MonoBehaviour
         {
             targetCameraPosition = Camera.main.transform.position + new Vector3(0f, 15f, 0f);
             playerMovement.rb.position = new Vector2(playerMovement.rb.position.x, playerMovement.rb.position.y + 8f);
-            Debug.Log("Camera: " + targetCameraPosition);
             isTransitioning = true;
             transitionStartTime = Time.time;
         }

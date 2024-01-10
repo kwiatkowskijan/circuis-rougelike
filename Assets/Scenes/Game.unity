@@ -2437,7 +2437,6 @@ GameObject:
   - component: {fileID: 1587500936}
   - component: {fileID: 1587500937}
   - component: {fileID: 1587500938}
-  - component: {fileID: 1587500939}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2567,22 +2566,6 @@ MonoBehaviour:
   maxHealth: 3
   currentHealth: 0
   heartDisplay: {fileID: 1772605027}
---- !u!114 &1587500939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1587500933}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9a716f423ba02942bb38a512093e4c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemy1: {fileID: 2397637815781803479, guid: 905cdd51f3d07c74b97ce920db37c87f, type: 3}
-  enemy2: {fileID: 0}
-  tilemap: {fileID: 0}
-  spawnDelay: 1
 --- !u!1 &1611960013
 GameObject:
   m_ObjectHideFlags: 0
@@ -4332,23 +4315,7 @@ CompositeCollider2D:
       - X: 89050000
         Y: -39550000
   m_CompositePaths:
-    m_Paths:
-    - - {x: 10.8949995, y: -5.9274263}
-      - {x: 10.8949995, y: 5.927426}
-      - {x: 10.877426, y: 5.9449997}
-      - {x: -10.877427, y: 5.9449997}
-      - {x: -10.895, y: 5.927426}
-      - {x: -10.895, y: -5.9274263}
-      - {x: -10.877427, y: -5.945}
-      - {x: 10.877426, y: -5.945}
-    - - {x: -8.887426, y: -3.9550002}
-      - {x: -8.905, y: -3.9374263}
-      - {x: -8.905, y: 3.9374263}
-      - {x: -8.887426, y: 3.9550002}
-      - {x: 8.887426, y: 3.9550002}
-      - {x: 8.905, y: 3.9374263}
-      - {x: 8.905, y: -3.9374263}
-      - {x: 8.887426, y: -3.9550002}
+    m_Paths: []
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.03
   m_UseDelaunayMesh: 0
@@ -4460,6 +4427,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room 1
       objectReference: {fileID: 0}
+    - target: {fileID: 647493014306729089, guid: bc60c71502f8d0248a877fedc696c2d4, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 848823197479500300, guid: bc60c71502f8d0248a877fedc696c2d4, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1980875791964130340, guid: bc60c71502f8d0248a877fedc696c2d4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 279.1
@@ -4500,7 +4475,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3605894097006251413, guid: bc60c71502f8d0248a877fedc696c2d4, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4685535908485610265, guid: bc60c71502f8d0248a877fedc696c2d4, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4998538110304350993, guid: bc60c71502f8d0248a877fedc696c2d4, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3878741306044525920, guid: bc60c71502f8d0248a877fedc696c2d4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

@@ -9,7 +9,6 @@ public class DungeonGenerator : MonoBehaviour
     public float roomDistanceX = 25f;
     public float roomDistanceY = 15f;
     public int maxRoomsPerIteration = 4;
-
     private List<GameObject> generatedRooms = new List<GameObject>();
 
     void Start()
@@ -31,6 +30,8 @@ public class DungeonGenerator : MonoBehaviour
 
         while (generatedCount < numberOfRooms - 1) // -1 dla pominiêcia pomieszczenia pocz¹tkowego
         {
+            
+
             Vector2[] directions = { Vector2.up, Vector2.down, Vector2.right, Vector2.left };
             Vector2 randomDirection = directions[Random.Range(0, directions.Length)];
 
