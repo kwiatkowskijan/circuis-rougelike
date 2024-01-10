@@ -37,7 +37,7 @@ public class EnemiesSpawner : MonoBehaviour
                 enemyAI.player = collision.transform;
             }
 
-            //Invoke("SpawnEnemy", spawnDelay);
+            Invoke("SpawnEnemy", spawnDelay);
             CheckRoomsPositions();
 
 

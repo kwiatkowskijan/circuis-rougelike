@@ -1828,8 +1828,8 @@ MonoBehaviour:
   wallsTilemap: {fileID: 1161874423029086442}
   doorUp1: {fileID: 11400000, guid: d8ce039761db5be4395b137450ff8331, type: 2}
   doorUp2: {fileID: 11400000, guid: 2df35d1f5ee84034ab514ce682a77b3a, type: 2}
-  wspolrzedneKafelkaUp1: {x: 0, y: 4, z: 0}
-  wspolrzedneKafelkaUp2: {x: -1, y: 4, z: 0}
+  coordsDoorsUp1: {x: 0, y: 4, z: 0}
+  coordsDoorsUp2: {x: -1, y: 4, z: 0}
 --- !u!1 &4998538110304350993
 GameObject:
   m_ObjectHideFlags: 0
