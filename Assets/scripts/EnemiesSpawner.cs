@@ -17,8 +17,8 @@ public class EnemiesSpawner : MonoBehaviour
     public Tilemap wallsTilemap;
     public TileBase doorUp1;
     public TileBase doorUp2;
-    public Vector3Int wspolrzedneKafelkaUp1;
-    public Vector3Int wspolrzedneKafelkaUp2;
+    public Vector3Int coordsDoorsUp1;
+    public Vector3Int coordsDoorsUp2;
 
     private void Start()
     {
@@ -88,8 +88,8 @@ public class EnemiesSpawner : MonoBehaviour
 
                         if (direction == Vector2.up)
                         {
-                            wallsTilemap.SetTile(wspolrzedneKafelkaUp1, doorUp2);
-                            wallsTilemap.SetTile(wspolrzedneKafelkaUp2, doorUp1);
+                            wallsTilemap.SetTile(coordsDoorsUp1, doorUp2);
+                            wallsTilemap.SetTile(coordsDoorsUp2, doorUp1);
                         }
                         else if (direction == Vector2.down)
                         {
