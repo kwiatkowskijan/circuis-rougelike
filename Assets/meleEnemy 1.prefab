@@ -187,4 +187,4 @@ MonoBehaviour:
   moveSpeed: 2
   maxHealth: 5
   currentHealth: 0
-  knockbackForce: 5
+  DeathParticless: {fileID: 7077650835620024154, guid: 1bdf07f8fea992d428a72e5f233db14c, type: 3}

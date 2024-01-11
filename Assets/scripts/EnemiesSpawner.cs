@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,16 +10,16 @@ public class EnemiesSpawner : MonoBehaviour
     public GameObject enemy2;
     public Tilemap tilemap;
     public float spawnDelay = 2.5f;
-
     public LayerMask roomLayer;
     private float MaxConDistanceX = 25f;
     private float MaxConDistanceY = 15f;
-
     public Tilemap wallsTilemap;
     public TileBase doorUp1;
     public TileBase doorUp2;
     public Vector3Int coordsDoorsUp1;
     public Vector3Int coordsDoorsUp2;
+
+    public List<GameObject> EnemiesSpawned = new List<GameObject>();
 
     private void Start()
     {
@@ -35,6 +36,12 @@ public class EnemiesSpawner : MonoBehaviour
             foreach (MeleEnemyAI enemyAI in enemies)
             {
                 enemyAI.player = collision.transform;
+
+                if(enemyAI.currentHealth <= 0)
+                {
+                    EnemiesSpawned.RemoveAt(0);
+                    Debug.Log("Zosta³o: " + EnemiesSpawned.Count);
+                }
             }
 
             Invoke("SpawnEnemy", spawnDelay);
@@ -63,6 +70,9 @@ public class EnemiesSpawner : MonoBehaviour
             {
                 enemyAI.player = GameObject.FindGameObjectWithTag("Player").transform;
             }
+
+            EnemiesSpawned.Add(newEnemy);
+            Debug.Log(EnemiesSpawned.Count);
         }
     }
 

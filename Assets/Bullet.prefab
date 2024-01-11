@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.23, y: -0.02, z: -0.44647983}
-  m_LocalScale: {x: 0.13379, y: 0.13379, z: 0.13379}
+  m_LocalScale: {x: 0.12, y: 0.12, z: 0.12}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -113,6 +113,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageAmount: 1
+  wallTag: Wall
+  enemyTag: Enemy
+  BulletDestroy: {fileID: 3466029629665728611, guid: 28fe1a0850e3f8845aa2913091c57622, type: 3}
+  BulletHit: {fileID: 199546976149986172, guid: 12819b3870ba34143a15fc6b1dde7235, type: 3}
 --- !u!70 &-7891613178953856292
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -146,5 +150,5 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 6.4, y: 3.2}
+  m_Size: {x: 5.4, y: 1.19}
   m_Direction: 1

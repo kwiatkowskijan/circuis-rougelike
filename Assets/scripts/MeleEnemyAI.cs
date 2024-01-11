@@ -6,11 +6,10 @@ public class MeleEnemyAI : MonoBehaviour
 {
     public Transform player;
     public float moveSpeed = 3.0f;
-
     public int maxHealth = 5;
     public int currentHealth;
 
-    public float knockbackForce = 5f;
+    [SerializeField] private ParticleSystem DeathParticless;
 
     public void Start()
     {
@@ -30,7 +29,7 @@ public class MeleEnemyAI : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-
+        
         if (currentHealth <= 0)
         {
             Die();
@@ -39,6 +38,7 @@ public class MeleEnemyAI : MonoBehaviour
 
     public void Die()
     {
+        Instantiate(DeathParticless, transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }
 
