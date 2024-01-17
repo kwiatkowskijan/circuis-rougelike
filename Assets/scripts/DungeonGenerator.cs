@@ -28,7 +28,7 @@ public class DungeonGenerator : MonoBehaviour
     void Update()
     {
         CheckPlayerRoom();
-        //CheckRoomsPositions();
+        CheckRoomsPositions();
     }
 
     void GenerateDungeon()
@@ -109,7 +109,7 @@ public class DungeonGenerator : MonoBehaviour
 
     void SpawnEnemyInRoom(GameObject currentRoom)
     {
-        int numberOfEnemies = Random.Range(1, 10);
+        int numberOfEnemies = Random.Range(1, 3);
 
         Tilemap tilemap = currentRoom.GetComponentInChildren<Tilemap>();
 
@@ -128,52 +128,93 @@ public class DungeonGenerator : MonoBehaviour
 
             if (enemyAI != null)
             {
-                enemyAI.player = player.transform;
+                //enemyAI.player = player.transform;
             }
         }
     }
 
-    /*public void CheckRoomsPositions()
+    void TrackEnemiesInRoom(GameObject currentRoom)
     {
-        List<GameObject> connectedRooms = new List<GameObject>();
+
+    }
+
+    void CheckRoomsPositions()
+    {
+        if (player == null)
+        {
+            Debug.LogWarning("Brak obiektu gracza.");
+            return;
+        }
+
+        GameObject currentRoom = null;
+
+        // ZnajdŸ pomieszczenie, w którym aktualnie znajduje siê gracz
+        foreach (GameObject room in generatedRooms)
+        {
+            BoxCollider2D floorCollider = room.GetComponentInChildren<BoxCollider2D>();
+
+            if (floorCollider != null && floorCollider.bounds.Contains(player.transform.position))
+            {
+                currentRoom = room;
+                break;
+            }
+        }
+
+        if (currentRoom == null)
+        {
+            Debug.LogWarning("Gracz nie znajduje siê w ¿adnym pomieszczeniu.");
+            return;
+        }
+
         Vector2[] CheckDirections = { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
 
         foreach (Vector2 direction in CheckDirections)
         {
             float maxDistance = direction == Vector2.up || direction == Vector2.down ? MaxConDistanceY : MaxConDistanceX;
 
-            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, maxDistance, roomLayer);
+            BoxCollider2D floorCollider = currentRoom.GetComponentInChildren<BoxCollider2D>();
 
-            foreach (RaycastHit2D hit in hits)
+            if (floorCollider != null)
             {
-                if (hit.collider != null && hit.collider.gameObject != gameObject && hit.collider.CompareTag("Floor"))
-                {
-                    GameObject connectedRoom = hit.collider.gameObject;
-                    if (!connectedRooms.Contains(connectedRoom))
-                    {
-                        connectedRooms.Add(connectedRoom);
+                Vector2 raycastOrigin = currentRoom.GetComponentInChildren<Grid>().transform.position;
 
-                        if (direction == Vector2.up)
+                RaycastHit2D[] hits = Physics2D.RaycastAll(raycastOrigin, direction, maxDistance, roomLayer);
+
+                Debug.DrawRay(currentRoom.transform.position, direction * maxDistance, Color.blue, 0.1f);
+
+                foreach (RaycastHit2D hit in hits)
+                {
+                    if (hit.collider != null && hit.collider.CompareTag("Floor") && hit.collider.gameObject != currentRoom)
+                    {
+                        GameObject connectedRoom = hit.collider.gameObject;
+                        Debug.Log(hit.point);
+                        if (!generatedRooms.Contains(connectedRoom))
                         {
-                            Debug.Log("Up");
-                        }
-                        else if (direction == Vector2.down)
-                        {
-                            Debug.Log("Down");
-                        }
-                        else if (direction == Vector2.right)
-                        {
-                            Debug.Log("Right");
-                        }
-                        else if (direction == Vector2.left)
-                        {
-                            Debug.Log("Left");
+                            generatedRooms.Add(connectedRoom);
+
+                            if (direction == Vector2.up)
+                            {
+                                Debug.Log("Up: Hit object: " + connectedRoom.name);
+                            }
+                            else if (direction == Vector2.down)
+                            {
+                                Debug.Log("Down: Hit object: " + connectedRoom.name);
+                            }
+                            else if (direction == Vector2.right)
+                            {
+                                Debug.Log("Right: Hit object: " + connectedRoom.name);
+                            }
+                            else if (direction == Vector2.left)
+                            {
+                                Debug.Log("Left: Hit object: " + connectedRoom.name);
+                            }
                         }
                     }
                 }
             }
         }
-    }*/
+
+    }
 
 
 }
