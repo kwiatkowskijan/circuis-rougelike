@@ -19,11 +19,16 @@ public class EnemiesSpawner : MonoBehaviour
     public Vector3Int coordsDoorsUp1;
     public Vector3Int coordsDoorsUp2;
 
-    public List<GameObject> EnemiesSpawned = new List<GameObject>();
+    public int OppsToKill = 0;
 
-    private void Start()
+    public void Start()
     {
         GameObject room = GetComponent<GameObject>();
+    }
+
+    private void Update()
+    {
+        Debug.Log(OppsToKill);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -36,24 +41,18 @@ public class EnemiesSpawner : MonoBehaviour
             foreach (MeleEnemyAI enemyAI in enemies)
             {
                 enemyAI.player = collision.transform;
-
-                if(enemyAI.currentHealth <= 0)
-                {
-                    EnemiesSpawned.RemoveAt(0);
-                    Debug.Log("Zosta³o: " + EnemiesSpawned.Count);
-                }
             }
 
             Invoke("SpawnEnemy", spawnDelay);
             CheckRoomsPositions();
-
-
         }
     }
 
-    void SpawnEnemy()
+    public void SpawnEnemy()
     {
-        for (int i = 0; i < Random.Range(1, 10); i++)
+        int numberOfEnemies = Random.Range(1, 10);
+
+        for (int i = 0; i < numberOfEnemies; i++)
         {
             Vector3Int randomCell = new Vector3Int(
                 Random.Range(tilemap.cellBounds.xMin + 3, tilemap.cellBounds.xMax - 3),
@@ -70,13 +69,13 @@ public class EnemiesSpawner : MonoBehaviour
             {
                 enemyAI.player = GameObject.FindGameObjectWithTag("Player").transform;
             }
-
-            EnemiesSpawned.Add(newEnemy);
-            Debug.Log(EnemiesSpawned.Count);
         }
+
+        OppsToKill = numberOfEnemies;
+
     }
 
-    void CheckRoomsPositions()
+    public void CheckRoomsPositions()
     {
         List<GameObject> connectedRooms = new List<GameObject>();
         Vector2[] CheckDirections = { Vector2.up, Vector2.down, Vector2.left, Vector2.right };

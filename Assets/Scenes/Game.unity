@@ -2363,7 +2363,7 @@ GameObject:
   - component: {fileID: 1473404867}
   - component: {fileID: 1473404868}
   m_Layer: 0
-  m_Name: First room
+  m_Name: Room 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2598,6 +2598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomPrefab: {fileID: 647493014306729089, guid: bc60c71502f8d0248a877fedc696c2d4, type: 3}
   startingRoom: {fileID: 1473404866}
+  meleEnemyPrefab: {fileID: 2397637815781803479, guid: 905cdd51f3d07c74b97ce920db37c87f, type: 3}
   numberOfRooms: 40
   roomDistanceX: 25
   roomDistanceY: 15

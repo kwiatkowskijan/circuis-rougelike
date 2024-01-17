@@ -91,7 +91,6 @@ GameObject:
   - component: {fileID: 2437335333223898522}
   - component: {fileID: 7382719760982213521}
   - component: {fileID: 1555986167640617379}
-  - component: {fileID: 7001949432188858551}
   m_Layer: 6
   m_Name: Floor
   m_TagString: Floor
@@ -1806,30 +1805,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 18, y: 8}
   m_EdgeRadius: 0
---- !u!114 &7001949432188858551
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3605894097006251413}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9a716f423ba02942bb38a512093e4c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemy1: {fileID: 2397637815781803479, guid: 905cdd51f3d07c74b97ce920db37c87f, type: 3}
-  enemy2: {fileID: 289494705831244270, guid: eff01caff0884eb4ebc76a9c4d92fde7, type: 3}
-  tilemap: {fileID: 2437335333223898522}
-  spawnDelay: 2.5
-  roomLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  wallsTilemap: {fileID: 1161874423029086442}
-  doorUp1: {fileID: 11400000, guid: d8ce039761db5be4395b137450ff8331, type: 2}
-  doorUp2: {fileID: 11400000, guid: 2df35d1f5ee84034ab514ce682a77b3a, type: 2}
-  coordsDoorsUp1: {x: 0, y: 4, z: 0}
-  coordsDoorsUp2: {x: -1, y: 4, z: 0}
 --- !u!1 &4998538110304350993
 GameObject:
   m_ObjectHideFlags: 0
