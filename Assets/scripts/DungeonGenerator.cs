@@ -14,6 +14,10 @@ public class DungeonGenerator : MonoBehaviour
     public int maxRoomsPerIteration = 4;
     private List<GameObject> generatedRooms = new List<GameObject>();
     private List<GameObject> spawnedEnemies = new List<GameObject>();
+    private Dictionary<GameObject, bool> roomsSpawned = new Dictionary<GameObject, bool>();
+    public LayerMask roomLayer;
+    private float MaxConDistanceX = 25f;
+    private float MaxConDistanceY = 15f;
 
     void Start()
     {
@@ -24,6 +28,7 @@ public class DungeonGenerator : MonoBehaviour
     void Update()
     {
         CheckPlayerRoom();
+        //CheckRoomsPositions();
     }
 
     void GenerateDungeon()
@@ -89,7 +94,11 @@ public class DungeonGenerator : MonoBehaviour
                     if (floorCollider.bounds.Contains(player.transform.position))
                     {
                         Debug.Log("Gracz znajduje siê w pomieszczeniu: " + room.name);
-                        SpawnEnemyInRoom();
+                        if (!roomsSpawned.ContainsKey(room) || !roomsSpawned[room])
+                        {
+                            SpawnEnemyInRoom(room);
+                            roomsSpawned[room] = true;
+                        }
                         break;
                     }
                 }
@@ -97,38 +106,74 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
-    void SpawnEnemyInRoom()
+
+    void SpawnEnemyInRoom(GameObject currentRoom)
     {
-        int EnemiesToSpawn = 3;
+        int numberOfEnemies = Random.Range(1, 10);
 
-        foreach (GameObject room in generatedRooms)
+        Tilemap tilemap = currentRoom.GetComponentInChildren<Tilemap>();
+
+        for (int i = 0; i < 1; i++)
         {
-            Tilemap[] tilemaps = room.GetComponentsInChildren<Tilemap>();
+            Vector3Int randomCell = new Vector3Int(
+                Random.Range(tilemap.cellBounds.xMin + 3, tilemap.cellBounds.xMax - 3),
+                Random.Range(tilemap.cellBounds.yMin + 3, tilemap.cellBounds.yMax - 3),
+                0
+            );
 
-            foreach (Tilemap tilemap in tilemaps)
+            Vector3 spawnPosition = tilemap.CellToWorld(randomCell);
+
+            GameObject newEnemy = Instantiate(meleEnemyPrefab, spawnPosition, Quaternion.identity);
+            MeleEnemyAI enemyAI = newEnemy.GetComponent<MeleEnemyAI>();
+
+            if (enemyAI != null)
             {
-                // SprawdŸ, czy Tilemapa ma odpowiedni¹ nazwê
-                if (tilemap.name == "floor")
-                {
-                    for (int i = 0; i < EnemiesToSpawn; i++)
-                    {
-                        Vector3Int randomCell = new Vector3Int(
-                            Random.Range(tilemap.cellBounds.xMin + 3, tilemap.cellBounds.xMax - 3),
-                            Random.Range(tilemap.cellBounds.yMin + 3, tilemap.cellBounds.yMax - 3),
-                            0
-                        );
-
-                        Vector3 spawnPosition = tilemap.CellToWorld(randomCell);
-
-                        GameObject newEnemy = Instantiate(meleEnemyPrefab, spawnPosition, Quaternion.identity);
-                        spawnedEnemies.Add(newEnemy);
-                    }
-
-                    // Je¿eli znaleziono Tilemapê o odpowiedniej nazwie, przerwij pêtlê
-                    break;
-                }
+                enemyAI.player = player.transform;
             }
         }
     }
+
+    /*public void CheckRoomsPositions()
+    {
+        List<GameObject> connectedRooms = new List<GameObject>();
+        Vector2[] CheckDirections = { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
+
+        foreach (Vector2 direction in CheckDirections)
+        {
+            float maxDistance = direction == Vector2.up || direction == Vector2.down ? MaxConDistanceY : MaxConDistanceX;
+
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, maxDistance, roomLayer);
+
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit.collider != null && hit.collider.gameObject != gameObject && hit.collider.CompareTag("Floor"))
+                {
+                    GameObject connectedRoom = hit.collider.gameObject;
+                    if (!connectedRooms.Contains(connectedRoom))
+                    {
+                        connectedRooms.Add(connectedRoom);
+
+                        if (direction == Vector2.up)
+                        {
+                            Debug.Log("Up");
+                        }
+                        else if (direction == Vector2.down)
+                        {
+                            Debug.Log("Down");
+                        }
+                        else if (direction == Vector2.right)
+                        {
+                            Debug.Log("Right");
+                        }
+                        else if (direction == Vector2.left)
+                        {
+                            Debug.Log("Left");
+                        }
+                    }
+                }
+            }
+        }
+    }*/
+
 
 }

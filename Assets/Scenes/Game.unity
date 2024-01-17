@@ -2603,6 +2603,9 @@ MonoBehaviour:
   roomDistanceX: 25
   roomDistanceY: 15
   maxRoomsPerIteration: 4
+  roomLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!4 &1611960015
 Transform:
   m_ObjectHideFlags: 0
