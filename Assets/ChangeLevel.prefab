@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7458612421223006591}
   - component: {fileID: 3903437247821729569}
-  - component: {fileID: 8326220278629931494}
+  - component: {fileID: -4769446008761945468}
   m_Layer: 0
   m_Name: ChangeLevel
   m_TagString: Untagged
@@ -70,11 +70,12 @@ EdgeCollider2D:
   m_Points:
   - {x: -0.5, y: 0}
   - {x: 0.5, y: 0}
+  - {x: 0.5, y: 0}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
---- !u!114 &8326220278629931494
+--- !u!114 &-4769446008761945468
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,4 +87,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a980e8debe3f865448d4c9b14ac3f213, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 5495794134888299073}
+  transitionDuration: 1
