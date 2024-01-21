@@ -13,7 +13,7 @@ public class DungeonGenerator : MonoBehaviour
     public float roomDistanceY = 15f;
     public int maxRoomsPerIteration = 4;
     private List<GameObject> generatedRooms = new List<GameObject>();
-    private List<GameObject> spawnedEnemies = new List<GameObject>();
+    private Dictionary<GameObject, int> enemiesInRoom = new Dictionary<GameObject, int>();
     private Dictionary<GameObject, bool> roomsSpawned = new Dictionary<GameObject, bool>();
     public LayerMask roomLayer;
     private float MaxConDistanceX = 25f;
@@ -94,6 +94,8 @@ public class DungeonGenerator : MonoBehaviour
                     if (floorCollider.bounds.Contains(player.transform.position))
                     {
                         Debug.Log("Gracz znajduje siê w pomieszczeniu: " + room.name);
+                        TrackEnemiesInRoom(room);
+
                         if (!roomsSpawned.ContainsKey(room) || !roomsSpawned[room])
                         {
                             SpawnEnemyInRoom(room);
@@ -113,7 +115,7 @@ public class DungeonGenerator : MonoBehaviour
 
         Tilemap tilemap = currentRoom.GetComponentInChildren<Tilemap>();
 
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < numberOfEnemies; i++)
         {
             Vector3Int randomCell = new Vector3Int(
                 Random.Range(tilemap.cellBounds.xMin + 3, tilemap.cellBounds.xMax - 3),
@@ -124,19 +126,75 @@ public class DungeonGenerator : MonoBehaviour
             Vector3 spawnPosition = tilemap.CellToWorld(randomCell);
 
             GameObject newEnemy = Instantiate(meleEnemyPrefab, spawnPosition, Quaternion.identity);
+
+            if (enemiesInRoom.ContainsKey(currentRoom))
+            {
+                enemiesInRoom[currentRoom]++;
+            }
+            else
+            {
+                enemiesInRoom[currentRoom] = 1;
+            }
+
             MeleEnemyAI enemyAI = newEnemy.GetComponent<MeleEnemyAI>();
+
+            Debug.Log("Enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
 
             if (enemyAI != null)
             {
+                enemyAI.currentRoom = currentRoom;
+                enemyAI.dungeonGenerator = this;
                 //enemyAI.player = player.transform;
+
+                if (enemiesInRoom.ContainsKey(currentRoom))
+                {
+                    enemiesInRoom[currentRoom]++;
+                }
+                else
+                {
+                    enemiesInRoom[currentRoom] = 1;
+                }
+
+                Debug.Log("Enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
             }
         }
     }
 
+
     void TrackEnemiesInRoom(GameObject currentRoom)
     {
+        if (enemiesInRoom.ContainsKey(currentRoom))
+        {
+            Debug.Log("Enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
 
+            MeleEnemyAI[] enemies = currentRoom.GetComponentsInChildren<MeleEnemyAI>();
+
+            foreach (MeleEnemyAI enemy in enemies)
+            {
+                if (enemy.currentHealth <= 0)
+                {
+                    Debug.Log("Enemy killed in " + currentRoom.name);
+                    enemiesInRoom[currentRoom]--;
+                }
+            }
+
+            Debug.Log("Remaining enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
+        }
+        else
+        {
+            Debug.Log("No enemies in " + currentRoom.name);
+        }
     }
+
+    public void DecreaseEnemiesInRoom(GameObject currentRoom)
+    {
+        if (enemiesInRoom.ContainsKey(currentRoom))
+        {
+            enemiesInRoom[currentRoom]--;
+            Debug.Log("Remaining enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
+        }
+    }
+
 
     void CheckRoomsPositions()
     {
@@ -148,7 +206,6 @@ public class DungeonGenerator : MonoBehaviour
 
         GameObject currentRoom = null;
 
-        // ZnajdŸ pomieszczenie, w którym aktualnie znajduje siê gracz
         foreach (GameObject room in generatedRooms)
         {
             BoxCollider2D floorCollider = room.GetComponentInChildren<BoxCollider2D>();
@@ -168,53 +225,54 @@ public class DungeonGenerator : MonoBehaviour
 
         Vector2[] CheckDirections = { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
 
-        foreach (Vector2 direction in CheckDirections)
+        if (enemiesInRoom.ContainsKey(currentRoom) && enemiesInRoom[currentRoom] <= 0)
         {
-            float maxDistance = direction == Vector2.up || direction == Vector2.down ? MaxConDistanceY : MaxConDistanceX;
-
-            BoxCollider2D floorCollider = currentRoom.GetComponentInChildren<BoxCollider2D>();
-
-            if (floorCollider != null)
+            foreach (Vector2 direction in CheckDirections)
             {
-                Vector2 raycastOrigin = currentRoom.GetComponentInChildren<Grid>().transform.position;
+                float maxDistance = direction == Vector2.up || direction == Vector2.down ? MaxConDistanceY : MaxConDistanceX;
 
-                RaycastHit2D[] hits = Physics2D.RaycastAll(raycastOrigin, direction, maxDistance, roomLayer);
+                BoxCollider2D floorCollider = currentRoom.GetComponentInChildren<BoxCollider2D>();
 
-                Debug.DrawRay(currentRoom.transform.position, direction * maxDistance, Color.blue, 0.1f);
-
-                foreach (RaycastHit2D hit in hits)
+                if (floorCollider != null)
                 {
-                    if (hit.collider != null && hit.collider.CompareTag("Floor") && hit.collider.gameObject != currentRoom)
-                    {
-                        GameObject connectedRoom = hit.collider.gameObject;
-                        Debug.Log(hit.point);
-                        if (!generatedRooms.Contains(connectedRoom))
-                        {
-                            generatedRooms.Add(connectedRoom);
+                    Vector2 raycastOrigin = currentRoom.GetComponentInChildren<Grid>().transform.position;
 
-                            if (direction == Vector2.up)
+                    RaycastHit2D[] hits = Physics2D.RaycastAll(raycastOrigin, direction, maxDistance, roomLayer);
+
+                    Debug.DrawRay(currentRoom.transform.position, direction * maxDistance, Color.blue, 0.1f);
+
+                    foreach (RaycastHit2D hit in hits)
+                    {
+                        if (hit.collider != null && hit.collider.CompareTag("Floor") && hit.collider.gameObject != currentRoom)
+                        {
+                            GameObject connectedRoom = hit.collider.gameObject;
+                            if (!generatedRooms.Contains(connectedRoom))
                             {
-                                Debug.Log("Up: Hit object: " + connectedRoom.name);
-                            }
-                            else if (direction == Vector2.down)
-                            {
-                                Debug.Log("Down: Hit object: " + connectedRoom.name);
-                            }
-                            else if (direction == Vector2.right)
-                            {
-                                Debug.Log("Right: Hit object: " + connectedRoom.name);
-                            }
-                            else if (direction == Vector2.left)
-                            {
-                                Debug.Log("Left: Hit object: " + connectedRoom.name);
+                                generatedRooms.Add(connectedRoom);
+
+
+                                if (direction == Vector2.up)
+                                {
+                                    Debug.Log("Up: Hit object: " + connectedRoom.name);
+                                }
+                                else if (direction == Vector2.down)
+                                {
+                                    Debug.Log("Down: Hit object: " + connectedRoom.name);
+                                }
+                                else if (direction == Vector2.right)
+                                {
+                                    Debug.Log("Right: Hit object: " + connectedRoom.name);
+                                }
+                                else if (direction == Vector2.left)
+                                {
+                                    Debug.Log("Left: Hit object: " + connectedRoom.name);
+                                }
+
                             }
                         }
                     }
                 }
             }
         }
-
     }
-
-
 }
