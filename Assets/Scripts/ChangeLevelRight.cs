@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class ChangeLevelDown : MonoBehaviour
+public class ChangeLevelRight : MonoBehaviour
 {
     public float transitionDuration = 1.0f;
     private Vector3 targetCameraPosition;
@@ -46,8 +46,8 @@ public class ChangeLevelDown : MonoBehaviour
     {
         if (other.CompareTag("Player") && !isTransitioning)
         {
-            targetCameraPosition = Camera.main.transform.position - new Vector3(0f, 15f, 0f);
-            playerMovement.rb.position = new Vector2(playerMovement.rb.position.x, playerMovement.rb.position.y - 8f);
+            targetCameraPosition = Camera.main.transform.position + new Vector3(25f, 0f, 0f);
+            playerMovement.rb.position = new Vector2(playerMovement.rb.position.x + 8f, playerMovement.rb.position.y);
             isTransitioning = true;
             transitionStartTime = Time.time;
         }

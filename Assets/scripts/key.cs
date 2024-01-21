@@ -20,7 +20,7 @@ public class key : MonoBehaviour
             tilemap.SetTile(wspolrzedneKafelkaUp1, doorUp1);
             tilemap.SetTile(wspolrzedneKafelkaUp2, doorUp2);
 
-            GameObject levelChanger = Instantiate(changelevel, new Vector2(0, 3.5f), transform.rotation);
+            GameObject levelChanger = Instantiate(changelevel, new Vector2(0, 3.9f), transform.rotation);
 
             Destroy(gameObject);
         }

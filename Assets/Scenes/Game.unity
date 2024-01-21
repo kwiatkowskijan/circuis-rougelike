@@ -2971,6 +2971,27 @@ MonoBehaviour:
   roomLayer:
     serializedVersion: 2
     m_Bits: 64
+  wallsTilemap: {fileID: 0}
+  coordsDoorsUp1: {x: -1, y: 6, z: 0}
+  coordsDoorsUp2: {x: 0, y: 6, z: 0}
+  coordsDoorsLeft1: {x: 0, y: 0, z: 0}
+  coordsDoorsLeft2: {x: 0, y: 0, z: 0}
+  coordsDoorsDown1: {x: 0, y: 0, z: 0}
+  coordsDoorsDown2: {x: 0, y: 0, z: 0}
+  coordsDoorsRight1: {x: 0, y: 0, z: 0}
+  coordsDoorsRight2: {x: 0, y: 0, z: 0}
+  doorUp1: {fileID: 11400000, guid: d8ce039761db5be4395b137450ff8331, type: 2}
+  doorUp2: {fileID: 11400000, guid: 2df35d1f5ee84034ab514ce682a77b3a, type: 2}
+  doorLeft1: {fileID: 0}
+  doorLeft2: {fileID: 0}
+  doorDown1: {fileID: 0}
+  doorDown2: {fileID: 0}
+  doorRight1: {fileID: 0}
+  doorRight2: {fileID: 0}
+  ChangeLevelUp: {fileID: 5495794134888299073, guid: 15143bd81de8610468ac2aea1a918027, type: 3}
+  ChangeLevelLeft: {fileID: 7851810874526330047, guid: 057b5e4620c270948838c62435dfc094, type: 3}
+  ChangeLevelRight: {fileID: 6528501273516590592, guid: d4f2baa42e837f04eb8eabdfb4b7803f, type: 3}
+  ChangeLevelDown: {fileID: 4296985013439028887, guid: 9533bd705ce73124c9680194a931327a, type: 3}
 --- !u!4 &1611960015
 Transform:
   m_ObjectHideFlags: 0

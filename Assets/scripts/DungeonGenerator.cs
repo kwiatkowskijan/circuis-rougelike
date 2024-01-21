@@ -19,6 +19,29 @@ public class DungeonGenerator : MonoBehaviour
     private float MaxConDistanceX = 25f;
     private float MaxConDistanceY = 15f;
 
+    public Tilemap wallsTilemap;
+    public Vector3Int coordsDoorsUp1;
+    public Vector3Int coordsDoorsUp2;
+    public Vector3Int coordsDoorsLeft1;
+    public Vector3Int coordsDoorsLeft2;
+    public Vector3Int coordsDoorsDown1;
+    public Vector3Int coordsDoorsDown2;
+    public Vector3Int coordsDoorsRight1;
+    public Vector3Int coordsDoorsRight2;
+    public TileBase doorUp1;
+    public TileBase doorUp2;
+    public TileBase doorLeft1;
+    public TileBase doorLeft2;
+    public TileBase doorDown1;
+    public TileBase doorDown2;
+    public TileBase doorRight1;
+    public TileBase doorRight2;
+
+    public GameObject ChangeLevelUp;
+    public GameObject ChangeLevelLeft;
+    public GameObject ChangeLevelRight;
+    public GameObject ChangeLevelDown;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -93,7 +116,7 @@ public class DungeonGenerator : MonoBehaviour
                 {
                     if (floorCollider.bounds.Contains(player.transform.position))
                     {
-                        Debug.Log("Gracz znajduje siê w pomieszczeniu: " + room.name);
+                        //Debug.Log("Gracz znajduje siê w pomieszczeniu: " + room.name);
                         TrackEnemiesInRoom(room);
 
                         if (!roomsSpawned.ContainsKey(room) || !roomsSpawned[room])
@@ -146,15 +169,6 @@ public class DungeonGenerator : MonoBehaviour
                 enemyAI.dungeonGenerator = this;
                 //enemyAI.player = player.transform;
 
-                if (enemiesInRoom.ContainsKey(currentRoom))
-                {
-                    enemiesInRoom[currentRoom]++;
-                }
-                else
-                {
-                    enemiesInRoom[currentRoom] = 1;
-                }
-
                 Debug.Log("Enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
             }
         }
@@ -165,7 +179,7 @@ public class DungeonGenerator : MonoBehaviour
     {
         if (enemiesInRoom.ContainsKey(currentRoom))
         {
-            Debug.Log("Enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
+            //Debug.Log("Enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
 
             MeleEnemyAI[] enemies = currentRoom.GetComponentsInChildren<MeleEnemyAI>();
 
@@ -178,11 +192,11 @@ public class DungeonGenerator : MonoBehaviour
                 }
             }
 
-            Debug.Log("Remaining enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
+            //Debug.Log("Remaining enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
         }
         else
         {
-            Debug.Log("No enemies in " + currentRoom.name);
+            //Debug.Log("No enemies in " + currentRoom.name);
         }
     }
 
@@ -191,7 +205,7 @@ public class DungeonGenerator : MonoBehaviour
         if (enemiesInRoom.ContainsKey(currentRoom))
         {
             enemiesInRoom[currentRoom]--;
-            Debug.Log("Remaining enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
+            //Debug.Log("Remaining enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
         }
     }
 
@@ -250,22 +264,27 @@ public class DungeonGenerator : MonoBehaviour
                             {
                                 generatedRooms.Add(connectedRoom);
 
-
                                 if (direction == Vector2.up)
                                 {
                                     Debug.Log("Up: Hit object: " + connectedRoom.name);
+                                    //wallsTilemap.SetTile(coordsDoorsUp1, doorUp2);
+                                    //wallsTilemap.SetTile(coordsDoorsUp2, doorUp1);
+                                    GameObject UpLevelChanger = Instantiate(ChangeLevelUp, currentRoom.transform.position + new Vector3(0, 3.9f, 0), transform.rotation);
                                 }
                                 else if (direction == Vector2.down)
                                 {
                                     Debug.Log("Down: Hit object: " + connectedRoom.name);
+                                    GameObject DownLevelChanger = Instantiate(ChangeLevelDown, currentRoom.transform.position - new Vector3(0, 3.9f, 0), transform.rotation);
                                 }
                                 else if (direction == Vector2.right)
                                 {
                                     Debug.Log("Right: Hit object: " + connectedRoom.name);
+                                    GameObject LeftLevelChanger = Instantiate(ChangeLevelRight, currentRoom.transform.position + new Vector3(8.9f, 0, 0), transform.rotation);
                                 }
                                 else if (direction == Vector2.left)
                                 {
                                     Debug.Log("Left: Hit object: " + connectedRoom.name);
+                                    GameObject LeftLevelChanger = Instantiate(ChangeLevelLeft, currentRoom.transform.position - new Vector3(8.9f, 0, 0), transform.rotation);
                                 }
 
                             }
