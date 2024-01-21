@@ -8,7 +8,8 @@ public class MeleEnemyAI : MonoBehaviour
     public float moveSpeed = 3.0f;
     public int maxHealth = 5;
     public int currentHealth;
-
+    public GameObject currentRoom;
+    public DungeonGenerator dungeonGenerator;
     [SerializeField] private ParticleSystem DeathParticless;
 
     public void Start()
@@ -40,6 +41,11 @@ public class MeleEnemyAI : MonoBehaviour
     {
         Instantiate(DeathParticless, transform.position, Quaternion.identity);
         Destroy(this.gameObject);
+
+        if (currentRoom != null && dungeonGenerator != null)
+        {
+            dungeonGenerator.DecreaseEnemiesInRoom(currentRoom);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

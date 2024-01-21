@@ -5,7 +5,7 @@ using UnityEngine;
 public class MiniMapBehaviour : MonoBehaviour
 {
     private RectTransform rectTransform;
-    public GameObject mapCameraObject; // Ustaw obiekt z komponentem Camera z Unity Editor
+    public GameObject mapCameraObject;
 
     void Start()
     {
@@ -14,7 +14,6 @@ public class MiniMapBehaviour : MonoBehaviour
 
     void Update()
     {
-        // Sprawdü, czy obiekt MapCamera zosta≥ przypisany
         if (mapCameraObject != null)
         {
             Camera mapCamera = mapCameraObject.GetComponent<Camera>();
