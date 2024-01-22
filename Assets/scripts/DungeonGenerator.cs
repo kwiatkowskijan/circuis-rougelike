@@ -45,6 +45,7 @@ public class DungeonGenerator : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        wallsTilemap = roomPrefab.GetComponentInChildren<Tilemap>();
         GenerateDungeon();
     }
 
@@ -260,6 +261,7 @@ public class DungeonGenerator : MonoBehaviour
                         if (hit.collider != null && hit.collider.CompareTag("Floor") && hit.collider.gameObject != currentRoom)
                         {
                             GameObject connectedRoom = hit.collider.gameObject;
+
                             if (!generatedRooms.Contains(connectedRoom))
                             {
                                 generatedRooms.Add(connectedRoom);
