@@ -11,21 +11,42 @@ public class MeleEnemyAI : MonoBehaviour
     public GameObject currentRoom;
     public DungeonGenerator dungeonGenerator;
     [SerializeField] private ParticleSystem DeathParticless;
+    private Animator bodyAnimator;
 
     public void Start()
     {
         currentHealth = maxHealth;
+        Transform childTransform = transform.Find("Body");
+
+        if (childTransform != null)
+        { 
+            bodyAnimator = childTransform.GetComponent<Animator>();
+            Debug.Log(bodyAnimator);
+        }
+        else
+        {
+            Debug.LogError("Error");
+        }
     }
     private void Update()
     {
         if (player != null)
         {
             Vector3 direction = (player.position - transform.position).normalized;
-
             transform.Translate(direction * moveSpeed * Time.deltaTime);
+
+            // Set the "isWalking" parameter only when the enemy is moving
+            bodyAnimator.SetBool("isWalking", direction.magnitude > 0.1f);
+        }
+        else
+        {
+            // If player is null, set "isWalking" to false
+            bodyAnimator.SetBool("isWalking", false);
         }
 
+        Debug.Log(bodyAnimator.ToString());
     }
+
 
     public void TakeDamage(int damage)
     {

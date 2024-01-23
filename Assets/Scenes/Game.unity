@@ -2963,7 +2963,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomPrefab: {fileID: 647493014306729089, guid: bc60c71502f8d0248a877fedc696c2d4, type: 3}
   startingRoom: {fileID: 1473404866}
-  meleEnemyPrefab: {fileID: 2397637815781803479, guid: 905cdd51f3d07c74b97ce920db37c87f, type: 3}
+  meleEnemyPrefab: {fileID: 5706646980119624674, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
   numberOfRooms: 40
   roomDistanceX: 25
   roomDistanceY: 15
@@ -6474,6 +6474,76 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1175194790646856372
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1499548052499693153, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.41
+      objectReference: {fileID: 0}
+    - target: {fileID: 1499548052499693153, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1499548052499693153, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1499548052499693153, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1499548052499693153, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1499548052499693153, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1499548052499693153, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1499548052499693153, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1499548052499693153, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1499548052499693153, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999088041610582010, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1587500934}
+    - target: {fileID: 5706646980119624674, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
+      propertyPath: m_Name
+      value: meleEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 5884718366994402550, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 841836406, guid: a8021cf90545c4a458246eac71dfa1f1, type: 3}
+    - target: {fileID: 5884718366994402550, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5410716745719190302, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -6486,3 +6556,4 @@ SceneRoots:
   - {fileID: 1473404867}
   - {fileID: 25931174}
   - {fileID: 53711364}
+  - {fileID: 1175194790646856372}

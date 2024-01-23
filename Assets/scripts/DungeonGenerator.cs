@@ -162,15 +162,15 @@ public class DungeonGenerator : MonoBehaviour
 
             MeleEnemyAI enemyAI = newEnemy.GetComponent<MeleEnemyAI>();
 
-            Debug.Log("Enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
+            //Debug.Log("Enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
 
             if (enemyAI != null)
             {
                 enemyAI.currentRoom = currentRoom;
                 enemyAI.dungeonGenerator = this;
-                //enemyAI.player = player.transform;
+                enemyAI.player = player.transform;
 
-                Debug.Log("Enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
+                //Debug.Log("Enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
             }
         }
     }
@@ -234,7 +234,7 @@ public class DungeonGenerator : MonoBehaviour
 
         if (currentRoom == null)
         {
-            Debug.LogWarning("Gracz nie znajduje siê w ¿adnym pomieszczeniu.");
+            //Debug.LogWarning("Gracz nie znajduje siê w ¿adnym pomieszczeniu.");
             return;
         }
 
@@ -265,6 +265,8 @@ public class DungeonGenerator : MonoBehaviour
                             if (!generatedRooms.Contains(connectedRoom))
                             {
                                 generatedRooms.Add(connectedRoom);
+
+                                Debug.Log("Kod siê wykona³");
 
                                 if (direction == Vector2.up)
                                 {
