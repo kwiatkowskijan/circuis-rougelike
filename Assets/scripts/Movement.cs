@@ -7,18 +7,48 @@ public class Movement : MonoBehaviour
     public float speed = 5f;
     public Rigidbody2D rb;
     public Vector2 movement;
-
     public GameObject bulletPrefab;
     public float bulletSpeed;
     private float lastFire;
     public float fireDelay;
     public Vector2 shootDir;
+    public Sprite bodyRight;
+    public Sprite headRight;
+
+    private void Start()
+    {
+
+    }
 
     void Update()
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
-        rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime); 
+        rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+
+        Debug.Log(movement.x);
+        Debug.Log(movement.y);
+        
+        if(movement.x != 0 || movement.y != 0)
+        {
+            Transform body = transform.Find("Body");
+
+            if(body != null)
+            {
+                Animator animator = body.GetComponent<Animator>();
+                animator.SetBool("isMoving", true);
+            }
+        }
+        else
+        {
+            Transform body = transform.Find("Body");
+
+            if (body != null)
+            {
+                Animator animator = body.GetComponent<Animator>();
+                animator.SetBool("isMoving", false);
+            }
+        }
 
         shootDir.x = Input.GetAxis("HorizontalShoot");
         shootDir.y = Input.GetAxis("VerticalShoot");
@@ -27,6 +57,30 @@ public class Movement : MonoBehaviour
         {
             Shoot(shootDir.x, shootDir.y);
             lastFire = Time.time;
+        }
+
+        /*if(Input.GetKeyDown(KeyCode.D))
+        {
+            Transform body = transform.Find("Body");
+
+            SpriteRenderer bodySprite = body.GetComponent<SpriteRenderer>();
+
+            if(body != null)
+            {
+                bodySprite.sprite = bodyRight;
+            }
+        }*/
+
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            Transform head = transform.Find("Head");
+
+            SpriteRenderer headSprite = head.GetComponent<SpriteRenderer>();
+
+            if (head != null)
+            {
+                headSprite.sprite = headRight;
+            }
         }
 
     }

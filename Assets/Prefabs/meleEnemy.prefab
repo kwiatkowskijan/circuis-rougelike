@@ -179,7 +179,7 @@ Animator:
   m_GameObject: {fileID: 2089572145572194522}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 913de5c9c5d8f3f4f8fb4e8fa2c4092a, type: 2}
+  m_Controller: {fileID: 9100000, guid: 76511bac2a6e92e45bb17bffe06c784b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -220,7 +220,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5.41, y: 0, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.48616204}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.48616204}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5016511606817359924}
@@ -253,7 +253,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 6
 --- !u!114 &2999088041610582010
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -34,17 +34,13 @@ public class MeleEnemyAI : MonoBehaviour
         {
             Vector3 direction = (player.position - transform.position).normalized;
             transform.Translate(direction * moveSpeed * Time.deltaTime);
+            bodyAnimator.SetBool("isWalking", true);
 
-            // Set the "isWalking" parameter only when the enemy is moving
-            bodyAnimator.SetBool("isWalking", direction.magnitude > 0.1f);
         }
         else
         {
-            // If player is null, set "isWalking" to false
             bodyAnimator.SetBool("isWalking", false);
         }
-
-        Debug.Log(bodyAnimator.ToString());
     }
 
 
@@ -73,6 +69,8 @@ public class MeleEnemyAI : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            bodyAnimator.SetBool("isHitting", true);
+
             PlayerLifeSystem playerLifeSystem = collision.gameObject.GetComponent<PlayerLifeSystem>();
             if (playerLifeSystem != null)
             {
@@ -80,5 +78,10 @@ public class MeleEnemyAI : MonoBehaviour
             }
 
         }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        bodyAnimator.SetBool("isHitting", false);
     }
 }
