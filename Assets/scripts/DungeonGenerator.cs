@@ -106,7 +106,6 @@ public class DungeonGenerator : MonoBehaviour
         int LayerIgnoreRaycast = LayerMask.NameToLayer("Ignore Raycast");
         int LayerDungeon = LayerMask.NameToLayer("Dungeon");
 
-
         if (player != null)
         {
             foreach (GameObject room in generatedRooms)
@@ -259,6 +258,7 @@ public class DungeonGenerator : MonoBehaviour
                         if (hit.collider != null && hit.collider.CompareTag("Floor") && hit.collider.gameObject != currentRoom)
                         {
                             GameObject connectedRoom = hit.collider.gameObject;
+
 
                             if (direction == Vector2.up)
                             {

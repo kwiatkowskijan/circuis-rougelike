@@ -14,6 +14,9 @@ public class Movement : MonoBehaviour
     public Vector2 shootDir;
     public Sprite bodyRight;
     public Sprite headRight;
+    public Sprite headLeft;
+    public Sprite headUp;
+    public Sprite headDown;
 
     private void Start()
     {
@@ -80,6 +83,39 @@ public class Movement : MonoBehaviour
             if (head != null)
             {
                 headSprite.sprite = headRight;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            Transform head = transform.Find("Head");
+
+            SpriteRenderer headSprite = head.GetComponent<SpriteRenderer>();
+
+            if (head != null)
+            {
+                headSprite.sprite = headLeft;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Transform head = transform.Find("Head");
+
+            SpriteRenderer headSprite = head.GetComponent<SpriteRenderer>();
+
+            if (head != null)
+            {
+                headSprite.sprite = headUp;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            Transform head = transform.Find("Head");
+
+            SpriteRenderer headSprite = head.GetComponent<SpriteRenderer>();
+
+            if (head != null)
+            {
+                headSprite.sprite = headDown;
             }
         }
 

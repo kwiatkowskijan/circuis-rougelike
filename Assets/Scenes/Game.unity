@@ -941,7 +941,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 8
   m_Sprite: {fileID: 846881761, guid: 5307edf8129107c40a769aa5e0583dbf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2972,7 +2972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6c39830c913e6d4c91d12ea507f7185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
+  speed: 6
   rb: {fileID: 1587500935}
   movement: {x: 0, y: 0}
   bulletPrefab: {fileID: 7414774354532087362, guid: f32f85f306464324d9fdc7ee9452f42b, type: 3}
@@ -2981,6 +2981,9 @@ MonoBehaviour:
   shootDir: {x: 0, y: 0}
   bodyRight: {fileID: -911559281, guid: 5307edf8129107c40a769aa5e0583dbf, type: 3}
   headRight: {fileID: -1555625401, guid: 5307edf8129107c40a769aa5e0583dbf, type: 3}
+  headLeft: {fileID: -229810253, guid: 5307edf8129107c40a769aa5e0583dbf, type: 3}
+  headUp: {fileID: 1918983348, guid: 5307edf8129107c40a769aa5e0583dbf, type: 3}
+  headDown: {fileID: -1073270268, guid: 5307edf8129107c40a769aa5e0583dbf, type: 3}
 --- !u!61 &1587500937
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3073,7 +3076,7 @@ MonoBehaviour:
   roomPrefab: {fileID: 647493014306729089, guid: bc60c71502f8d0248a877fedc696c2d4, type: 3}
   startingRoom: {fileID: 1473404866}
   meleEnemyPrefab: {fileID: 5706646980119624674, guid: faba2267a3271d14998f8bce797c39d8, type: 3}
-  numberOfRooms: 40
+  numberOfRooms: 15
   roomDistanceX: 25
   roomDistanceY: 15
   maxRoomsPerIteration: 4
