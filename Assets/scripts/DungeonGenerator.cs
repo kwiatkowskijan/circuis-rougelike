@@ -10,6 +10,7 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField] private GameObject startingRoom;
     private GameObject player;
     [SerializeField] private GameObject meleEnemyPrefab;
+    [SerializeField] private GameObject rangedEnemyPrefab;
     [SerializeField] private int numberOfRooms = 15;
     private int roomsCompleted = 0;
     private float roomDistanceX = 25f;
@@ -42,6 +43,7 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField] private GameObject ChangeLevelLeft;
     [SerializeField] private GameObject ChangeLevelRight;
     [SerializeField] private GameObject ChangeLevelDown;
+
 
     void Start()
     {
@@ -174,25 +176,56 @@ public class DungeonGenerator : MonoBehaviour
 
             Vector3 spawnPosition = tilemap.CellToWorld(randomCell);
 
-            GameObject newEnemy = Instantiate(meleEnemyPrefab, spawnPosition, Quaternion.identity);
+            GameObject newEnemy;
 
-            if (enemiesInRoom.ContainsKey(currentRoom))
+            if (Random.Range(0, 2) == 0)
             {
-                enemiesInRoom[currentRoom]++;
+                newEnemy = Instantiate(meleEnemyPrefab, spawnPosition, Quaternion.identity);
+
+                if (enemiesInRoom.ContainsKey(currentRoom))
+                {
+                    enemiesInRoom[currentRoom]++;
+                }
+                else
+                {
+                    enemiesInRoom[currentRoom] = 1;
+                }
+
+                MeleEnemyAI enemyAI = newEnemy.GetComponent<MeleEnemyAI>();
+
+                if (enemyAI != null)
+                {
+                    enemyAI.currentRoom = currentRoom;
+                    enemyAI.dungeonGenerator = this;
+
+                    StartCoroutine(AssignPlayerTransformCoroutine(newEnemy));
+                }
             }
             else
             {
-                enemiesInRoom[currentRoom] = 1;
+                newEnemy = Instantiate(rangedEnemyPrefab, spawnPosition, Quaternion.identity);
+
+                if (enemiesInRoom.ContainsKey(currentRoom))
+                {
+                    enemiesInRoom[currentRoom]++;
+                }
+                else
+                {
+                    enemiesInRoom[currentRoom] = 1;
+                }
+
+                RangeEnemyAI enemyAI = newEnemy.GetComponent<RangeEnemyAI>();
+
+                if (enemyAI != null)
+                {
+                    enemyAI.currentRoom = currentRoom;
+                    enemyAI.dungeonGenerator = this;
+
+                    StartCoroutine(AssignPlayerTransformCoroutine(newEnemy));
+                }
+
             }
 
-            MeleEnemyAI enemyAI = newEnemy.GetComponent<MeleEnemyAI>();
-
-            if (enemyAI != null)
-            {
-                enemyAI.currentRoom = currentRoom;
-                enemyAI.dungeonGenerator = this;
-                StartCoroutine(AssignPlayerTransformCoroutine(newEnemy));
-            }
         }
     }
 
@@ -201,9 +234,15 @@ public class DungeonGenerator : MonoBehaviour
         yield return new WaitForSeconds(0.8f);
 
         MeleEnemyAI enemyAI = newEnemy.GetComponent<MeleEnemyAI>();
+        RangeEnemyAI rangeEnemyAI = newEnemy.GetComponent<RangeEnemyAI>();
+
         if (enemyAI != null)
         {
             enemyAI.player = player.transform;
+        }
+        else if (rangeEnemyAI != null)
+        {
+            rangeEnemyAI.player = player.transform;
         }
     }
 

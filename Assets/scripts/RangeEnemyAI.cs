@@ -16,6 +16,7 @@ public class RangeEnemyAI : MonoBehaviour
     private float shotCounter;
     public GameObject currentRoom;
     public DungeonGenerator dungeonGenerator;
+    [SerializeField] private ParticleSystem DeathParticles;
 
     public void Start()
     {
@@ -52,7 +53,14 @@ public class RangeEnemyAI : MonoBehaviour
 
     public void Die()
     {
+        Instantiate(DeathParticles, transform.position, Quaternion.identity);
+
         Destroy(this.gameObject);
+
+        if (currentRoom != null && dungeonGenerator != null)
+        {
+            dungeonGenerator.DecreaseEnemiesInRoom(currentRoom);
+        }
     }
 
     void Shoot()

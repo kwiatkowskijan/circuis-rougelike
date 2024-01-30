@@ -6,7 +6,9 @@ public class ProjectileScript : MonoBehaviour
 {
     public float speed = 7.5f;
     private Vector3 direction;
-    public float lifeTime = 3.0f;
+    public float lifeTime = 1.0f;
+    [SerializeField] private ParticleSystem BulletDestroy;
+    [SerializeField] private ParticleSystem BulletHit;
 
     public void Start()
     {
@@ -26,14 +28,23 @@ public class ProjectileScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerLifeSystem playerLife = other.GetComponent<PlayerLifeSystem>();
-            if (playerLife != null)
+            PlayerBehavior player = other.GetComponent<PlayerBehavior>();
+
+            if (player != null)
             {
-                playerLife.TakeDamage(1);
+                Instantiate(BulletHit, transform.position, Quaternion.identity);
+                player.TakeDamage(1);
             }
 
             Destroy(gameObject);
         }
+
+        if (other.CompareTag("Wall") || other.CompareTag("FirstRoomWalls"))
+        {
+            Instantiate(BulletDestroy, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
+
     }
 
     IEnumerator DeathDelay()

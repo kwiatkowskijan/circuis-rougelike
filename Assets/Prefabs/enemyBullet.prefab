@@ -135,3 +135,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 7.5
   lifeTime: 3
+  BulletDestroy: {fileID: 3466029629665728611, guid: 28fe1a0850e3f8845aa2913091c57622, type: 3}
+  BulletHit: {fileID: 199546976149986172, guid: 12819b3870ba34143a15fc6b1dde7235, type: 3}
