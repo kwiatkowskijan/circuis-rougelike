@@ -24,18 +24,14 @@ public class ProjectileScript : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Sprawdzenie kolizji z graczem
         if (other.CompareTag("Player"))
         {
-            // Pobranie komponentu PlayerLifeSystem z obiektu gracza
             PlayerLifeSystem playerLife = other.GetComponent<PlayerLifeSystem>();
             if (playerLife != null)
             {
-                // Odejmowanie ¿ycia gracza
                 playerLife.TakeDamage(1);
             }
 
-            // Zniszczenie pocisku po trafieniu w gracza
             Destroy(gameObject);
         }
     }

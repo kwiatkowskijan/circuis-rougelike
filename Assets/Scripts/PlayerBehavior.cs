@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Movement : MonoBehaviour
+public class PlayerBehavior : MonoBehaviour
 {
     public float speed = 5f;
     public Rigidbody2D rb;
@@ -17,15 +18,15 @@ public class Movement : MonoBehaviour
     public Sprite headLeft;
     public Sprite headUp;
     public Sprite headDown;
-
     public int maxHealth = 3;
     private int currentHealth;
     public HeartDisplay heartDisplay;
 
-    private void Start()
+    void Start()
     {
         currentHealth = maxHealth;
         heartDisplay.UpdateHearts(currentHealth);
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -33,12 +34,12 @@ public class Movement : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
         rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
-        
-        if(movement.x != 0 || movement.y != 0)
+
+        if (movement.x != 0 || movement.y != 0)
         {
             Transform body = transform.Find("Body");
 
-            if(body != null)
+            if (body != null)
             {
                 Animator animator = body.GetComponent<Animator>();
                 animator.SetBool("isMoving", true);
@@ -58,7 +59,7 @@ public class Movement : MonoBehaviour
         shootDir.x = Input.GetAxis("HorizontalShoot");
         shootDir.y = Input.GetAxis("VerticalShoot");
 
-        if((shootDir.x != 0  || shootDir.y != 0) && Time.time > lastFire + fireDelay)
+        if ((shootDir.x != 0 || shootDir.y != 0) && Time.time > lastFire + fireDelay)
         {
             Shoot(shootDir.x, shootDir.y);
             lastFire = Time.time;
@@ -125,6 +126,11 @@ public class Movement : MonoBehaviour
     {
         currentHealth -= damage;
         heartDisplay.UpdateHearts(currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            SceneManager.LoadScene("Menu");
+        }
     }
 
 }

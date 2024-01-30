@@ -71,7 +71,8 @@ public class MeleEnemyAI : MonoBehaviour
         {
             bodyAnimator.SetBool("isHitting", true);
 
-            PlayerLifeSystem playerLifeSystem = collision.gameObject.GetComponent<PlayerLifeSystem>();
+            PlayerBehavior playerLifeSystem = collision.gameObject.GetComponent<PlayerBehavior>();
+
             if (playerLifeSystem != null)
             {
                 playerLifeSystem.TakeDamage(1);

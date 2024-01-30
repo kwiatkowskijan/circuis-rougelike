@@ -9,12 +9,12 @@ public class ChangeLevelRight : MonoBehaviour
     private bool isTransitioning = false;
     private float transitionStartTime;
 
-    private Movement playerMovement;
+    private PlayerBehavior player;
 
     void Start()
     {
         targetCameraPosition = Camera.main.transform.position;
-        playerMovement = FindObjectOfType<Movement>();
+        player = FindObjectOfType<PlayerBehavior>();
     }
 
     void Update()
@@ -47,7 +47,7 @@ public class ChangeLevelRight : MonoBehaviour
         if (other.CompareTag("Player") && !isTransitioning)
         {
             targetCameraPosition = Camera.main.transform.position + new Vector3(25f, 0f, 0f);
-            playerMovement.rb.position = new Vector2(playerMovement.rb.position.x + 8f, playerMovement.rb.position.y);
+            player.rb.position = new Vector2(player.rb.position.x + 8f, player.rb.position.y);
             isTransitioning = true;
             transitionStartTime = Time.time;
         }

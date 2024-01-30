@@ -1,45 +1,47 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 public class DungeonGenerator : MonoBehaviour
 {
-    public GameObject roomPrefab;
-    public GameObject startingRoom;
+    [SerializeField] private GameObject roomPrefab;
+    [SerializeField] private GameObject startingRoom;
     private GameObject player;
-    public GameObject meleEnemyPrefab;
-    public int numberOfRooms = 15;
-    public float roomDistanceX = 25f;
-    public float roomDistanceY = 15f;
-    public int maxRoomsPerIteration = 4;
+    [SerializeField] private GameObject meleEnemyPrefab;
+    [SerializeField] private int numberOfRooms = 15;
+    private int roomsCompleted = 0;
+    private float roomDistanceX = 25f;
+    private float roomDistanceY = 15f;
+    //private int maxRoomsPerIteration = 4;
     private List<GameObject> generatedRooms = new List<GameObject>();
     private Dictionary<GameObject, int> enemiesInRoom = new Dictionary<GameObject, int>();
     private Dictionary<GameObject, bool> roomsSpawned = new Dictionary<GameObject, bool>();
-    public LayerMask roomLayer;
+    [SerializeField] private LayerMask roomLayer;
     private float MaxConDistanceX = 25f;
     private float MaxConDistanceY = 15f;
 
-    public Vector3Int coordsDoorsUp1;
-    public Vector3Int coordsDoorsUp2;
-    public Vector3Int coordsDoorsDown1;
-    public Vector3Int coordsDoorsDown2;
-    public Vector3Int coordsDoorsRight1;
-    public Vector3Int coordsDoorsRight2;
-    public Vector3Int coordsDoorsLeft1;
-    public Vector3Int coordsDoorsLeft2;
-    public TileBase doorUp1;
-    public TileBase doorUp2;
-    public TileBase doorDown1;
-    public TileBase doorDown2;
-    public TileBase doorRight1;
-    public TileBase doorRight2;
-    public TileBase doorLeft1;
-    public TileBase doorLeft2;
-
-    public GameObject ChangeLevelUp;
-    public GameObject ChangeLevelLeft;
-    public GameObject ChangeLevelRight;
-    public GameObject ChangeLevelDown;
+    [SerializeField] private Vector3Int coordsDoorsUp1;
+    [SerializeField] private Vector3Int coordsDoorsUp2;
+    [SerializeField] private Vector3Int coordsDoorsDown1;
+    [SerializeField] private Vector3Int coordsDoorsDown2;
+    [SerializeField] private Vector3Int coordsDoorsRight1;
+    [SerializeField] private Vector3Int coordsDoorsRight2;
+    [SerializeField] private Vector3Int coordsDoorsLeft1;
+    [SerializeField] private Vector3Int coordsDoorsLeft2;
+    [SerializeField] private TileBase doorUp1;
+    [SerializeField] private TileBase doorUp2;
+    [SerializeField] private TileBase doorDown1;
+    [SerializeField] private TileBase doorDown2;
+    [SerializeField] private TileBase doorRight1;
+    [SerializeField] private TileBase doorRight2;
+    [SerializeField] private TileBase doorLeft1;
+    [SerializeField] private TileBase doorLeft2;
+    [SerializeField] private GameObject ChangeLevelUp;
+    [SerializeField] private GameObject ChangeLevelLeft;
+    [SerializeField] private GameObject ChangeLevelRight;
+    [SerializeField] private GameObject ChangeLevelDown;
 
     void Start()
     {
@@ -50,6 +52,11 @@ public class DungeonGenerator : MonoBehaviour
     void Update()
     {
         CheckPlayerRoom();
+
+        if(roomsCompleted == numberOfRooms - 1)
+        {
+            SceneManager.LoadScene("WinMessage");
+        }
     }
 
     void GenerateDungeon()
@@ -151,14 +158,9 @@ public class DungeonGenerator : MonoBehaviour
             }
         }
     }
-
-
-
-
-
     void SpawnEnemyInRoom(GameObject currentRoom)
     {
-        int numberOfEnemies = Random.Range(1, 3);
+        int numberOfEnemies = Random.Range(1, 7);
 
         Tilemap tilemap = currentRoom.GetComponentInChildren<Tilemap>();
 
@@ -189,10 +191,21 @@ public class DungeonGenerator : MonoBehaviour
             {
                 enemyAI.currentRoom = currentRoom;
                 enemyAI.dungeonGenerator = this;
-                enemyAI.player = player.transform;
+                StartCoroutine(AssignPlayerTransformCoroutine(newEnemy));
             }
         }
-    }    
+    }
+
+    IEnumerator AssignPlayerTransformCoroutine(GameObject newEnemy)
+    {
+        yield return new WaitForSeconds(0.8f);
+
+        MeleEnemyAI enemyAI = newEnemy.GetComponent<MeleEnemyAI>();
+        if (enemyAI != null)
+        {
+            enemyAI.player = player.transform;
+        }
+    }
 
     public void DecreaseEnemiesInRoom(GameObject currentRoom)
     {
@@ -204,6 +217,8 @@ public class DungeonGenerator : MonoBehaviour
         if(enemiesInRoom[currentRoom] <= 0)
         {
             CheckRoomsPositions();
+            roomsCompleted++;
+            Debug.Log("Completed rooms: " + roomsCompleted);
         }
     }
 
@@ -255,7 +270,7 @@ public class DungeonGenerator : MonoBehaviour
 
                     foreach (RaycastHit2D hit in hits)
                     {
-                        if (hit.collider != null && hit.collider.CompareTag("Floor") && hit.collider.gameObject != currentRoom)
+                        if (hit.collider != null && hit.collider.CompareTag("Floor") && hit.collider.gameObject != currentRoom || hit.collider.CompareTag("FirstRoomWalls"))
                         {
                             GameObject connectedRoom = hit.collider.gameObject;
 

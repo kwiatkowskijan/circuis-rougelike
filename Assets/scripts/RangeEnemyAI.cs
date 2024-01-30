@@ -14,6 +14,8 @@ public class RangeEnemyAI : MonoBehaviour
     public Transform firePoint;
     public float timeBetweenShots = 0.5f;
     private float shotCounter;
+    public GameObject currentRoom;
+    public DungeonGenerator dungeonGenerator;
 
     public void Start()
     {
@@ -55,9 +57,7 @@ public class RangeEnemyAI : MonoBehaviour
 
     void Shoot()
     {
-        // Tworzenie pocisku na podstawie prefabrykatu
         GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-        // Ustawianie kierunku lotu pocisku
         ProjectileScript projectileScript = projectile.GetComponent<ProjectileScript>();
         if (projectileScript != null)
         {

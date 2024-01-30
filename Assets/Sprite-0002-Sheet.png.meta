@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8891e1bbf38778a4ab6b65f6a901c92d
+guid: cc6813f0a85785846af5828e3b4ab921
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Sprite-0001-Sheet_0
+      name: Sprite-0002-Sheet_0
       rect:
         serializedVersion: 2
         x: 32
@@ -124,14 +124,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 00b2ad2f8853acb41a1e504c159469e4
-      internalID: -2045953180
+      spriteID: e54cca48a1357494b942b5856db99357
+      internalID: -1180279523
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite-0001-Sheet_1
+      name: Sprite-0002-Sheet_1
       rect:
         serializedVersion: 2
         x: 64
@@ -145,8 +145,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c8a7b9bf6d1629246a3f6c068270cad0
-      internalID: 1003794108
+      spriteID: 9c46eceaa24d655449290947cf88e8f4
+      internalID: 434528551
       vertices: []
       indices: 
       edges: []
@@ -162,8 +162,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Sprite-0001-Sheet_0: -2045953180
-      Sprite-0001-Sheet_1: 1003794108
+      Sprite-0002-Sheet_0: -1180279523
+      Sprite-0002-Sheet_1: 434528551
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
