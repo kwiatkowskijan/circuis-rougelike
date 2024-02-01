@@ -17,10 +17,22 @@ public class RangeEnemyAI : MonoBehaviour
     public GameObject currentRoom;
     public DungeonGenerator dungeonGenerator;
     [SerializeField] private ParticleSystem DeathParticles;
+    private Animator bodyAnimator;
 
     public void Start()
     {
         currentHealth = maxHealth;
+
+        Transform childTransform = transform.Find("Body");
+
+        if (childTransform != null)
+        {
+            bodyAnimator = childTransform.GetComponent<Animator>();
+        }
+        else
+        {
+            Debug.LogError("Error");
+        }
     }
     private void Update()
     {
@@ -28,6 +40,8 @@ public class RangeEnemyAI : MonoBehaviour
         {
             Vector3 direction = (player.position - transform.position).normalized;
             transform.Translate(direction * moveSpeed * Time.deltaTime);
+
+            bodyAnimator.SetBool("IsWalking", true);
 
             if (shotCounter <= 0)
             {
@@ -38,6 +52,10 @@ public class RangeEnemyAI : MonoBehaviour
             {
                 shotCounter -= Time.deltaTime;
             }
+        }
+        else
+        {
+            bodyAnimator.SetBool("IsWalking", false);
         }
     }
 

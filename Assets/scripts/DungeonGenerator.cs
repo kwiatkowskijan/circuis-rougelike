@@ -22,6 +22,8 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField] private LayerMask roomLayer;
     private float MaxConDistanceX = 25f;
     private float MaxConDistanceY = 15f;
+    [SerializeField] private GameObject increseHealthPickup;
+    [SerializeField] private GameObject increseSpeedPickup;
 
     [SerializeField] private Vector3Int coordsDoorsUp1;
     [SerializeField] private Vector3Int coordsDoorsUp2;
@@ -295,6 +297,19 @@ public class DungeonGenerator : MonoBehaviour
 
         if (enemiesInRoom.ContainsKey(currentRoom) && enemiesInRoom[currentRoom] <= 0)
         {
+
+            if (roomsCompleted % 3 == 0 && roomsCompleted != 0)
+            {
+                Vector3 spawnPosition = currentRoom.transform.position;
+                Instantiate(increseHealthPickup, spawnPosition, Quaternion.identity);
+            }
+
+            if (roomsCompleted % 5 == 0 && roomsCompleted != 0)
+            {
+                Vector3 spawnPosition = currentRoom.transform.position;
+                Instantiate(increseSpeedPickup, spawnPosition, Quaternion.identity);
+            }
+
             foreach (Vector2 direction in CheckDirections)
             {
                 float maxDistance = direction == Vector2.up || direction == Vector2.down ? MaxConDistanceY : MaxConDistanceX;

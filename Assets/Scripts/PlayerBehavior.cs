@@ -21,16 +21,22 @@ public class PlayerBehavior : MonoBehaviour
     public int maxHealth = 3;
     private int currentHealth;
     public HeartDisplay heartDisplay;
-
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip takeDamageSFX;
+    [SerializeField] private AudioClip shootSFX;
     void Start()
     {
         currentHealth = maxHealth;
         heartDisplay.UpdateHearts(currentHealth);
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
+        Debug.Log("¯ycie: " + currentHealth);
+        Debug.Log("Predkosc: " + speed);
+
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
         rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
@@ -114,6 +120,9 @@ public class PlayerBehavior : MonoBehaviour
 
     void Shoot(float x, float y)
     {
+        audioSource.clip = shootSFX;
+        audioSource.volume = 0.01f;
+        audioSource.Play();
         GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation) as GameObject;
         bullet.AddComponent<Rigidbody2D>().gravityScale = 0;
         Vector2 shootDirection = new Vector2(x, y).normalized;
@@ -124,6 +133,9 @@ public class PlayerBehavior : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        audioSource.clip = takeDamageSFX;
+        audioSource.volume = 0.001f;
+        audioSource.Play();
         currentHealth -= damage;
         heartDisplay.UpdateHearts(currentHealth);
 
@@ -132,5 +144,14 @@ public class PlayerBehavior : MonoBehaviour
             SceneManager.LoadScene("Menu");
         }
     }
+    public void Heal(int healAmount)
+    {
+        currentHealth = Mathf.Min(maxHealth, currentHealth + healAmount);
+        heartDisplay.UpdateHearts(currentHealth);
+    }
 
+    public void IncreseSpeed(float speedAmount)
+    {
+        speed++;
+    }
 }
