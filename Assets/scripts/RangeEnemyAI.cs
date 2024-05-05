@@ -14,10 +14,25 @@ public class RangeEnemyAI : MonoBehaviour
     public Transform firePoint;
     public float timeBetweenShots = 0.5f;
     private float shotCounter;
+    public GameObject currentRoom;
+    public DungeonGenerator dungeonGenerator;
+    [SerializeField] private ParticleSystem DeathParticles;
+    private Animator bodyAnimator;
 
     public void Start()
     {
         currentHealth = maxHealth;
+
+        Transform childTransform = transform.Find("Body");
+
+        if (childTransform != null)
+        {
+            bodyAnimator = childTransform.GetComponent<Animator>();
+        }
+        else
+        {
+            Debug.LogError("Error");
+        }
     }
     private void Update()
     {
@@ -25,6 +40,8 @@ public class RangeEnemyAI : MonoBehaviour
         {
             Vector3 direction = (player.position - transform.position).normalized;
             transform.Translate(direction * moveSpeed * Time.deltaTime);
+
+            bodyAnimator.SetBool("IsWalking", true);
 
             if (shotCounter <= 0)
             {
@@ -35,6 +52,10 @@ public class RangeEnemyAI : MonoBehaviour
             {
                 shotCounter -= Time.deltaTime;
             }
+        }
+        else
+        {
+            bodyAnimator.SetBool("IsWalking", false);
         }
     }
 
@@ -50,14 +71,19 @@ public class RangeEnemyAI : MonoBehaviour
 
     public void Die()
     {
+        Instantiate(DeathParticles, transform.position, Quaternion.identity);
+
         Destroy(this.gameObject);
+
+        if (currentRoom != null && dungeonGenerator != null)
+        {
+            dungeonGenerator.DecreaseEnemiesInRoom(currentRoom);
+        }
     }
 
     void Shoot()
     {
-        // Tworzenie pocisku na podstawie prefabrykatu
         GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-        // Ustawianie kierunku lotu pocisku
         ProjectileScript projectileScript = projectile.GetComponent<ProjectileScript>();
         if (projectileScript != null)
         {

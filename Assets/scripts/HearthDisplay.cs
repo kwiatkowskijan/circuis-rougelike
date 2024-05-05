@@ -7,11 +7,11 @@ public class HeartDisplay : MonoBehaviour
     public Sprite fullHeart;
     public Sprite emptyHeart;
 
-    private PlayerLifeSystem playerLifeSystem;
+    private PlayerBehavior playerLifeSystem;
 
     void Start()
     {
-        playerLifeSystem = FindObjectOfType<PlayerLifeSystem>();
+        playerLifeSystem = FindObjectOfType<PlayerBehavior>();
 
         if (playerLifeSystem == null)
         {

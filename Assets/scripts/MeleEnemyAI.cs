@@ -10,21 +10,36 @@ public class MeleEnemyAI : MonoBehaviour
     public int currentHealth;
     public GameObject currentRoom;
     public DungeonGenerator dungeonGenerator;
-    [SerializeField] private ParticleSystem DeathParticless;
+    [SerializeField] private ParticleSystem DeathParticles;
+    private Animator bodyAnimator;
 
     public void Start()
     {
         currentHealth = maxHealth;
+        Transform childTransform = transform.Find("Body");
+
+        if (childTransform != null)
+        { 
+            bodyAnimator = childTransform.GetComponent<Animator>();
+        }
+        else
+        {
+            Debug.LogError("Error");
+        }
     }
+
     private void Update()
     {
         if (player != null)
         {
             Vector3 direction = (player.position - transform.position).normalized;
-
             transform.Translate(direction * moveSpeed * Time.deltaTime);
+            bodyAnimator.SetBool("isWalking", true);
         }
-
+        else
+        {
+            bodyAnimator.SetBool("isWalking", false);
+        }
     }
 
     public void TakeDamage(int damage)
@@ -39,7 +54,8 @@ public class MeleEnemyAI : MonoBehaviour
 
     public void Die()
     {
-        Instantiate(DeathParticless, transform.position, Quaternion.identity);
+        Instantiate(DeathParticles, transform.position, Quaternion.identity);
+
         Destroy(this.gameObject);
 
         if (currentRoom != null && dungeonGenerator != null)
@@ -52,12 +68,19 @@ public class MeleEnemyAI : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            PlayerLifeSystem playerLifeSystem = collision.gameObject.GetComponent<PlayerLifeSystem>();
+            bodyAnimator.SetBool("isHitting", true);
+
+            PlayerBehavior playerLifeSystem = collision.gameObject.GetComponent<PlayerBehavior>();
+
             if (playerLifeSystem != null)
             {
                 playerLifeSystem.TakeDamage(1);
             }
-
         }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        bodyAnimator.SetBool("isHitting", false);
     }
 }

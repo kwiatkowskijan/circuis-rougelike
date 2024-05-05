@@ -29,11 +29,10 @@ public class DamageDealer : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (other.CompareTag(wallTag))
+        if (other.CompareTag(wallTag) || other.CompareTag("FirstRoomWalls"))
         {
             Instantiate(BulletDestroy, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
-
 }

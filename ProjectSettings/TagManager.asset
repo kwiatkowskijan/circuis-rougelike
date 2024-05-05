@@ -9,6 +9,7 @@ TagManager:
   - RoomCollider
   - Room
   - Floor
+  - FirstRoomWalls
   layers:
   - Default
   - TransparentFX

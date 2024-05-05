@@ -1,23 +1,51 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 public class DungeonGenerator : MonoBehaviour
 {
-    public GameObject roomPrefab;
-    public GameObject startingRoom;
+    [SerializeField] private GameObject roomPrefab;
+    [SerializeField] private GameObject startingRoom;
     private GameObject player;
-    public GameObject meleEnemyPrefab;
-    public int numberOfRooms = 15;
-    public float roomDistanceX = 25f;
-    public float roomDistanceY = 15f;
-    public int maxRoomsPerIteration = 4;
+    [SerializeField] private GameObject meleEnemyPrefab;
+    [SerializeField] private GameObject rangedEnemyPrefab;
+    [SerializeField] private int numberOfRooms = 15;
+    private int roomsCompleted = 0;
+    private float roomDistanceX = 25f;
+    private float roomDistanceY = 15f;
+    //private int maxRoomsPerIteration = 4;
     private List<GameObject> generatedRooms = new List<GameObject>();
     private Dictionary<GameObject, int> enemiesInRoom = new Dictionary<GameObject, int>();
     private Dictionary<GameObject, bool> roomsSpawned = new Dictionary<GameObject, bool>();
-    public LayerMask roomLayer;
+    [SerializeField] private LayerMask roomLayer;
     private float MaxConDistanceX = 25f;
     private float MaxConDistanceY = 15f;
+    [SerializeField] private GameObject increseHealthPickup;
+    [SerializeField] private GameObject increseSpeedPickup;
+
+    [SerializeField] private Vector3Int coordsDoorsUp1;
+    [SerializeField] private Vector3Int coordsDoorsUp2;
+    [SerializeField] private Vector3Int coordsDoorsDown1;
+    [SerializeField] private Vector3Int coordsDoorsDown2;
+    [SerializeField] private Vector3Int coordsDoorsRight1;
+    [SerializeField] private Vector3Int coordsDoorsRight2;
+    [SerializeField] private Vector3Int coordsDoorsLeft1;
+    [SerializeField] private Vector3Int coordsDoorsLeft2;
+    [SerializeField] private TileBase doorUp1;
+    [SerializeField] private TileBase doorUp2;
+    [SerializeField] private TileBase doorDown1;
+    [SerializeField] private TileBase doorDown2;
+    [SerializeField] private TileBase doorRight1;
+    [SerializeField] private TileBase doorRight2;
+    [SerializeField] private TileBase doorLeft1;
+    [SerializeField] private TileBase doorLeft2;
+    [SerializeField] private GameObject ChangeLevelUp;
+    [SerializeField] private GameObject ChangeLevelLeft;
+    [SerializeField] private GameObject ChangeLevelRight;
+    [SerializeField] private GameObject ChangeLevelDown;
+
 
     void Start()
     {
@@ -28,7 +56,11 @@ public class DungeonGenerator : MonoBehaviour
     void Update()
     {
         CheckPlayerRoom();
-        CheckRoomsPositions();
+
+        if(roomsCompleted == numberOfRooms - 1)
+        {
+            SceneManager.LoadScene("WinMessage");
+        }
     }
 
     void GenerateDungeon()
@@ -82,6 +114,8 @@ public class DungeonGenerator : MonoBehaviour
     void CheckPlayerRoom()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
+        int LayerIgnoreRaycast = LayerMask.NameToLayer("Ignore Raycast");
+        int LayerDungeon = LayerMask.NameToLayer("Dungeon");
 
         if (player != null)
         {
@@ -89,29 +123,48 @@ public class DungeonGenerator : MonoBehaviour
             {
                 BoxCollider2D floorCollider = room.GetComponentInChildren<BoxCollider2D>();
 
-                if (floorCollider != null)
+                if (floorCollider != null && floorCollider.bounds.Contains(player.transform.position))
                 {
-                    if (floorCollider.bounds.Contains(player.transform.position))
-                    {
-                        Debug.Log("Gracz znajduje siê w pomieszczeniu: " + room.name);
-                        TrackEnemiesInRoom(room);
+                    Transform gridTransform = room.transform.Find("Grid");
 
-                        if (!roomsSpawned.ContainsKey(room) || !roomsSpawned[room])
+                    if (gridTransform != null)
+                    {
+                        Transform floorTransform = gridTransform.Find("Floor");
+
+                        if (floorTransform != null)
                         {
-                            SpawnEnemyInRoom(room);
-                            roomsSpawned[room] = true;
+                            GameObject floorObject = floorTransform.gameObject;
+                            floorObject.layer = LayerIgnoreRaycast;
                         }
-                        break;
+                    }
+
+                    if (!roomsSpawned.ContainsKey(room) || !roomsSpawned[room])
+                    {
+                        SpawnEnemyInRoom(room);
+                        roomsSpawned[room] = true;
+                    }
+                }
+                else 
+                {
+                    Transform gridTransform = room.transform.Find("Grid");
+
+                    if (gridTransform != null)
+                    {
+                        Transform floorTransform = gridTransform.Find("Floor");
+
+                        if (floorTransform != null)
+                        {
+                            GameObject floorObject = floorTransform.gameObject;
+                            floorObject.layer = LayerDungeon;
+                        }
                     }
                 }
             }
         }
     }
-
-
     void SpawnEnemyInRoom(GameObject currentRoom)
     {
-        int numberOfEnemies = Random.Range(1, 3);
+        int numberOfEnemies = Random.Range(1, 7);
 
         Tilemap tilemap = currentRoom.GetComponentInChildren<Tilemap>();
 
@@ -125,26 +178,11 @@ public class DungeonGenerator : MonoBehaviour
 
             Vector3 spawnPosition = tilemap.CellToWorld(randomCell);
 
-            GameObject newEnemy = Instantiate(meleEnemyPrefab, spawnPosition, Quaternion.identity);
+            GameObject newEnemy;
 
-            if (enemiesInRoom.ContainsKey(currentRoom))
+            if (Random.Range(0, 2) == 0)
             {
-                enemiesInRoom[currentRoom]++;
-            }
-            else
-            {
-                enemiesInRoom[currentRoom] = 1;
-            }
-
-            MeleEnemyAI enemyAI = newEnemy.GetComponent<MeleEnemyAI>();
-
-            Debug.Log("Enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
-
-            if (enemyAI != null)
-            {
-                enemyAI.currentRoom = currentRoom;
-                enemyAI.dungeonGenerator = this;
-                //enemyAI.player = player.transform;
+                newEnemy = Instantiate(meleEnemyPrefab, spawnPosition, Quaternion.identity);
 
                 if (enemiesInRoom.ContainsKey(currentRoom))
                 {
@@ -155,34 +193,58 @@ public class DungeonGenerator : MonoBehaviour
                     enemiesInRoom[currentRoom] = 1;
                 }
 
-                Debug.Log("Enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
+                MeleEnemyAI enemyAI = newEnemy.GetComponent<MeleEnemyAI>();
+
+                if (enemyAI != null)
+                {
+                    enemyAI.currentRoom = currentRoom;
+                    enemyAI.dungeonGenerator = this;
+
+                    StartCoroutine(AssignPlayerTransformCoroutine(newEnemy));
+                }
             }
+            else
+            {
+                newEnemy = Instantiate(rangedEnemyPrefab, spawnPosition, Quaternion.identity);
+
+                if (enemiesInRoom.ContainsKey(currentRoom))
+                {
+                    enemiesInRoom[currentRoom]++;
+                }
+                else
+                {
+                    enemiesInRoom[currentRoom] = 1;
+                }
+
+                RangeEnemyAI enemyAI = newEnemy.GetComponent<RangeEnemyAI>();
+
+                if (enemyAI != null)
+                {
+                    enemyAI.currentRoom = currentRoom;
+                    enemyAI.dungeonGenerator = this;
+
+                    StartCoroutine(AssignPlayerTransformCoroutine(newEnemy));
+                }
+
+            }
+
         }
     }
 
-
-    void TrackEnemiesInRoom(GameObject currentRoom)
+    IEnumerator AssignPlayerTransformCoroutine(GameObject newEnemy)
     {
-        if (enemiesInRoom.ContainsKey(currentRoom))
+        yield return new WaitForSeconds(0.8f);
+
+        MeleEnemyAI enemyAI = newEnemy.GetComponent<MeleEnemyAI>();
+        RangeEnemyAI rangeEnemyAI = newEnemy.GetComponent<RangeEnemyAI>();
+
+        if (enemyAI != null)
         {
-            Debug.Log("Enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
-
-            MeleEnemyAI[] enemies = currentRoom.GetComponentsInChildren<MeleEnemyAI>();
-
-            foreach (MeleEnemyAI enemy in enemies)
-            {
-                if (enemy.currentHealth <= 0)
-                {
-                    Debug.Log("Enemy killed in " + currentRoom.name);
-                    enemiesInRoom[currentRoom]--;
-                }
-            }
-
-            Debug.Log("Remaining enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
+            enemyAI.player = player.transform;
         }
-        else
+        else if (rangeEnemyAI != null)
         {
-            Debug.Log("No enemies in " + currentRoom.name);
+            rangeEnemyAI.player = player.transform;
         }
     }
 
@@ -191,13 +253,20 @@ public class DungeonGenerator : MonoBehaviour
         if (enemiesInRoom.ContainsKey(currentRoom))
         {
             enemiesInRoom[currentRoom]--;
-            Debug.Log("Remaining enemies in " + currentRoom.name + ": " + enemiesInRoom[currentRoom]);
+        }
+
+        if(enemiesInRoom[currentRoom] <= 0)
+        {
+            CheckRoomsPositions();
+            roomsCompleted++;
+            Debug.Log("Completed rooms: " + roomsCompleted);
         }
     }
 
 
     void CheckRoomsPositions()
     {
+
         if (player == null)
         {
             Debug.LogWarning("Brak obiektu gracza.");
@@ -215,6 +284,7 @@ public class DungeonGenerator : MonoBehaviour
                 currentRoom = room;
                 break;
             }
+
         }
 
         if (currentRoom == null)
@@ -227,6 +297,19 @@ public class DungeonGenerator : MonoBehaviour
 
         if (enemiesInRoom.ContainsKey(currentRoom) && enemiesInRoom[currentRoom] <= 0)
         {
+
+            if (roomsCompleted % 3 == 0 && roomsCompleted != 0)
+            {
+                Vector3 spawnPosition = currentRoom.transform.position;
+                Instantiate(increseHealthPickup, spawnPosition, Quaternion.identity);
+            }
+
+            if (roomsCompleted % 5 == 0 && roomsCompleted != 0)
+            {
+                Vector3 spawnPosition = currentRoom.transform.position;
+                Instantiate(increseSpeedPickup, spawnPosition, Quaternion.identity);
+            }
+
             foreach (Vector2 direction in CheckDirections)
             {
                 float maxDistance = direction == Vector2.up || direction == Vector2.down ? MaxConDistanceY : MaxConDistanceX;
@@ -239,35 +322,80 @@ public class DungeonGenerator : MonoBehaviour
 
                     RaycastHit2D[] hits = Physics2D.RaycastAll(raycastOrigin, direction, maxDistance, roomLayer);
 
-                    Debug.DrawRay(currentRoom.transform.position, direction * maxDistance, Color.blue, 0.1f);
-
                     foreach (RaycastHit2D hit in hits)
                     {
-                        if (hit.collider != null && hit.collider.CompareTag("Floor") && hit.collider.gameObject != currentRoom)
+                        if (hit.collider != null && hit.collider.CompareTag("Floor") && hit.collider.gameObject != currentRoom || hit.collider.CompareTag("FirstRoomWalls"))
                         {
                             GameObject connectedRoom = hit.collider.gameObject;
-                            if (!generatedRooms.Contains(connectedRoom))
+
+
+                            if (direction == Vector2.up)
                             {
-                                generatedRooms.Add(connectedRoom);
+                                Transform gridTransform = currentRoom.transform.Find("Grid");
 
+                                if (gridTransform != null)
+                                {
+                                    Transform wallsTransform = gridTransform.Find("Walls");
 
-                                if (direction == Vector2.up)
-                                {
-                                    Debug.Log("Up: Hit object: " + connectedRoom.name);
+                                    if (wallsTransform != null)
+                                    {
+                                        Tilemap wallsTilemap = wallsTransform.GetComponent<Tilemap>();
+                                        wallsTilemap.SetTile(coordsDoorsUp1, doorUp1);
+                                        wallsTilemap.SetTile(coordsDoorsUp2, doorUp2);
+                                    }
                                 }
-                                else if (direction == Vector2.down)
-                                {
-                                    Debug.Log("Down: Hit object: " + connectedRoom.name);
-                                }
-                                else if (direction == Vector2.right)
-                                {
-                                    Debug.Log("Right: Hit object: " + connectedRoom.name);
-                                }
-                                else if (direction == Vector2.left)
-                                {
-                                    Debug.Log("Left: Hit object: " + connectedRoom.name);
-                                }
+                                GameObject UpLevelChanger = Instantiate(ChangeLevelUp, currentRoom.transform.position + new Vector3(0, 3.9f, 0), transform.rotation);
+                            }
+                            else if (direction == Vector2.down)
+                            {
+                                Transform gridTransform = currentRoom.transform.Find("Grid");
 
+                                if (gridTransform != null)
+                                {
+                                    Transform wallsTransform = gridTransform.Find("Walls");
+
+                                    if (wallsTransform != null)
+                                    {
+                                        Tilemap wallsTilemap = wallsTransform.GetComponent<Tilemap>();
+                                        wallsTilemap.SetTile(coordsDoorsDown1, doorDown1);
+                                        wallsTilemap.SetTile(coordsDoorsDown2, doorDown2);
+                                    }
+                                }
+                                GameObject DownLevelChanger = Instantiate(ChangeLevelDown, currentRoom.transform.position - new Vector3(0, 3.9f, 0), transform.rotation);
+                            }
+                            else if (direction == Vector2.right)
+                            {
+                                Transform gridTransform = currentRoom.transform.Find("Grid");
+
+                                if (gridTransform != null)
+                                {
+                                    Transform wallsTransform = gridTransform.Find("Walls");
+
+                                    if (wallsTransform != null)
+                                    {
+                                        Tilemap wallsTilemap = wallsTransform.GetComponent<Tilemap>();
+                                        wallsTilemap.SetTile(coordsDoorsRight1, doorRight1);
+                                        wallsTilemap.SetTile(coordsDoorsRight2, doorRight2);
+                                    }
+                                }
+                                GameObject LeftLevelChanger = Instantiate(ChangeLevelRight, currentRoom.transform.position + new Vector3(8.9f, 0, 0), transform.rotation);
+                            }
+                            else if (direction == Vector2.left)
+                            {
+                                Transform gridTransform = currentRoom.transform.Find("Grid");
+
+                                if (gridTransform != null)
+                                {
+                                    Transform wallsTransform = gridTransform.Find("Walls");
+
+                                    if (wallsTransform != null)
+                                    {
+                                        Tilemap wallsTilemap = wallsTransform.GetComponent<Tilemap>();
+                                        wallsTilemap.SetTile(coordsDoorsLeft1, doorLeft1);
+                                        wallsTilemap.SetTile(coordsDoorsLeft2, doorLeft2);
+                                    }
+                                }
+                                GameObject LeftLevelChanger = Instantiate(ChangeLevelLeft, currentRoom.transform.position - new Vector3(8.9f, 0, 0), transform.rotation);
                             }
                         }
                     }
